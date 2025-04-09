@@ -5,9 +5,9 @@ import '../../Admin.css'
 
 export default function AdminDetailsPage() {
   const [admins, setAdmins] = useState([])
-  const [orgName, setOrgName] = useState('') // 🔥 to hold org name
+  const [orgName, setOrgName] = useState('')
   const searchParams = useSearchParams()
-  const orgId = searchParams.get('page') // orgId passed as ?page=org_id
+  const orgId = searchParams.get('page') 
 
   useEffect(() => {
     const fetchAdmins = async () => {

@@ -1,73 +1,195 @@
 'use client'
 
 import { useState } from 'react'
+import ExportModal from '../../../../components/PDFGeneration/ExportModal'
 import BarChart from '../../../../Statistics/BarChart'
 import DonutChart from '../../../../Statistics/DonutChart'
+import { redirect } from 'next/navigation'
 
-export default function AnalyticsPage() {
+export default function AnalyticsPage () {
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false)
   // Sample data - replace with your actual data
   const studentCount = 1480
   const testCount = 58
-  
+
   const leaderboardData = [
-    { name: "Alex Johnson", testsAttended: 47, highestScore: 98, totalScore: 3890, avgScore: 82.8 },
-    { name: "Samantha Lee", testsAttended: 52, highestScore: 100, totalScore: 4680, avgScore: 90.0 },
-    { name: "Michael Chen", testsAttended: 49, highestScore: 95, totalScore: 4165, avgScore: 85.0 },
-    { name: "Taylor Moore", testsAttended: 51, highestScore: 97, totalScore: 4335, avgScore: 85.0 },
-    { name: "Jordan Smith", testsAttended: 43, highestScore: 96, totalScore: 3440, avgScore: 80.0 },
-    { name: "Emma Williams", testsAttended: 48, highestScore: 99, totalScore: 4368, avgScore: 91.0 },
-    { name: "Noah Brown", testsAttended: 50, highestScore: 94, totalScore: 4200, avgScore: 84.0 },
-    { name: "Olivia Davis", testsAttended: 46, highestScore: 98, totalScore: 4048, avgScore: 88.0 },
-  ]
-  
-  const passPercentage = 78 // Sample pass percentage
-  const overallAvgScore = 84.5 // Sample overall average score
-  
-  // Donut chart data for pass percentage
-  const passData = [
-    { name: "Pass", value: 1154, color: "#10b981" },
-    { name: "Fail", value: 326, color: "#ef4444" }
-  ]
-  
-  // Bar chart data for average scores
-  const avgScoreData = [
-    { day: "Week 1", value: 81.2 },
-    { day: "Week 2", value: 83.5 },
-    { day: "Week 3", value: 85.8 },
-    { day: "Week 4", value: 84.5 },
-    { day: "Week 5", value: 87.2 }
+    {
+      name: 'Alex Johnson',
+      testsAttended: 47,
+      highestScore: 98,
+      totalScore: 3890,
+      avgScore: 82.8
+    },
+    {
+      name: 'Samantha Lee',
+      testsAttended: 52,
+      highestScore: 100,
+      totalScore: 4680,
+      avgScore: 90.0
+    },
+    {
+      name: 'Michael Chen',
+      testsAttended: 49,
+      highestScore: 95,
+      totalScore: 4165,
+      avgScore: 85.0
+    },
+    {
+      name: 'Taylor Moore',
+      testsAttended: 51,
+      highestScore: 97,
+      totalScore: 4335,
+      avgScore: 85.0
+    },
+    {
+      name: 'Jordan Smith',
+      testsAttended: 43,
+      highestScore: 96,
+      totalScore: 3440,
+      avgScore: 80.0
+    },
+    {
+      name: 'Emma Williams',
+      testsAttended: 48,
+      highestScore: 99,
+      totalScore: 4368,
+      avgScore: 91.0
+    },
+    {
+      name: 'Noah Brown',
+      testsAttended: 50,
+      highestScore: 94,
+      totalScore: 4200,
+      avgScore: 84.0
+    },
+    {
+      name: 'Olivia Davis',
+      testsAttended: 46,
+      highestScore: 98,
+      totalScore: 4048,
+      avgScore: 88.0
+    }
   ]
 
+  const passPercentage = 78 // Sample pass percentage
+  const overallAvgScore = 84.5 // Sample overall average score
+
+  // Donut chart data for pass percentage
+  const passData = [
+    { name: 'Pass', value: 1154, color: '#10b981' },
+    { name: 'Fail', value: 326, color: '#ef4444' }
+  ]
+
+  // Bar chart data for average scores
+  const avgScoreData = [
+    { day: 'Week 1', value: 81.2 },
+    { day: 'Week 2', value: 83.5 },
+    { day: 'Week 3', value: 85.8 },
+    { day: 'Week 4', value: 84.5 },
+    { day: 'Week 5', value: 87.2 }
+  ]
+
+  const sampleTestData = {
+    candidateName: 'John Smith',
+    testDate: '1 January 2022',
+    testId: '12345678',
+    overallScore: 72,
+    cefr: 'B2',
+    overallDescription:
+      'Candidate easily handles a wide variety of discourse and speaking styles, and can contribute to a native-paced discussion. Speech is generally fluent, smooth and clear; candidate controls appropriate language structure for speaking about complex material.',
+    intelligibility: {
+      score: 4,
+      level: 'Good',
+      description:
+        "Listeners may require a little effort at times to understand some of the candidate's speech."
+    },
+    skills: {
+      sentenceMastery: {
+        score: 62,
+        versantScore: 60,
+        cefr: 'B2',
+        description:
+          'Candidate can understand, recall and produce a variety of English phrases and clauses in sentence context. Candidate generally produces accurate and meaningful sentences.',
+        tips: [
+          'Practice describing your educational history using the correct tense (e.g., present perfect, past perfect, past continuous, etc.).',
+          'Practice rephrasing passive sentences into active sentences.'
+        ]
+      },
+      vocabulary: {
+        score: 64,
+        versantScore: 61,
+        cefr: 'B2',
+        description:
+          'Candidate generally understands and can produce most everyday English words as they are used in clear colloquial speech.',
+        tips: [
+          'Verbally summarize the main points of a podcast you listened to, using vocabulary from the podcast.',
+          'Practice telling a well-known story from your culture in English, looking up how to translate any unknown words.'
+        ]
+      },
+      fluency: {
+        score: 49,
+        versantScore: 51,
+        cefr: 'B1',
+        description:
+          'Candidate speaks with adequate rhythm but with some inappropriate phrasing and pausing. Hesitations and possible repetitions or false starts may sometimes interfere with the smooth flow of speech.',
+        tips: [
+          'Practice speaking for a full two minutes without stopping. If you get stuck on a word, try expressing your idea in a different way.',
+          'Listen to short videos of native speakers of English. Try repeating what they say, imitating the pace and the location of pauses.'
+        ]
+      },
+      pronunciation: {
+        score: 69,
+        versantScore: 64,
+        cefr: 'B2+',
+        description:
+          'Candidate produces most vowels and consonants in a clear manner, although an occasional mispronunciation may occur. Stress is placed correctly in most common words.',
+        tips: [
+          'Look up commonly mispronounced words in English and learn how to say them correctly.',
+          "Listen to a video clip of a native English speaker. Pause the video after each sentence and repeat it exactly, imitating the speaker's rhythm."
+        ]
+      }
+    }
+  }
+  const handleExportClick = () => {
+    setIsExportModalOpen(true)
+  }
+
   return (
-    <div className="analytics-container">
-      <h1 className="page-title">Student Analytics Dashboard</h1>
-      
+    <div className='analytics-container'>
+      <div className='analytics-header'>
+        <h1 className='page-title'>Student Analytics Dashboard</h1>
+        <div className='actions-container'>
+          <button className='student-button' onClick={handleExportClick}>
+            Export Data
+          </button>
+        </div>
+      </div>
       {/* Top boxes */}
-      <div className="top-boxes">
-        <div className="info-box">
-          <h2 className="box-label">Total Students</h2>
-          <div className="box-value-container">
-            <span className="box-value">{studentCount}</span>
-            <span className="trend-indicator positive">+12% ↑</span>
+      <div className='top-boxes'>
+        <div className='info-box'>
+          <h2 className='box-label'>Total Students</h2>
+          <div className='box-value-container'>
+            <span className='box-value'>{studentCount}</span>
+            <span className='trend-indicator positive'>+12% ↑</span>
           </div>
         </div>
-        
-        <div className="info-box">
-          <h2 className="box-label">Tests Conducted</h2>
-          <div className="box-value-container">
-            <span className="box-value">{testCount}</span>
-            <span className="trend-indicator positive">+3 this week</span>
+
+        <div className='info-box'>
+          <h2 className='box-label'>Tests Conducted</h2>
+          <div className='box-value-container'>
+            <span className='box-value'>{testCount}</span>
+            <span className='trend-indicator positive'>+3 this week</span>
           </div>
         </div>
       </div>
-      
+
       {/* Leaderboard */}
-      <div className="leaderboard">
-        <div className="leaderboard-header">
-          <h2 className="leaderboard-title">Student Leaderboard</h2>
+      <div className='leaderboard'>
+        <div className='leaderboard-header'>
+          <h2 className='leaderboard-title'>Student Leaderboard</h2>
         </div>
-        <div className="table-container">
-          <table className="leaderboard-table">
+        <div className='table-container'>
+          <table className='leaderboard-table'>
             <thead>
               <tr>
                 <th>Rank</th>
@@ -82,24 +204,26 @@ export default function AnalyticsPage() {
               {leaderboardData
                 .sort((a, b) => b.avgScore - a.avgScore)
                 .map((student, index) => (
-                  <tr key={index} className={index < 3 ? "top-performer" : ""}>
+                  <tr key={index} className={index < 3 ? 'top-performer' : ''}>
                     <td>
-                      <div className="rank">#{index + 1}</div>
+                      <div className='rank'>#{index + 1}</div>
                     </td>
                     <td>
-                      <div className="student-name">{student.name}</div>
+                      <div className='student-name'>{student.name}</div>
                     </td>
                     <td>
-                      <div className="data-cell">{student.testsAttended}</div>
+                      <div className='data-cell'>{student.testsAttended}</div>
                     </td>
                     <td>
-                      <div className="data-cell">{student.highestScore}</div>
+                      <div className='data-cell'>{student.highestScore}</div>
                     </td>
                     <td>
-                      <div className="data-cell">{student.totalScore}</div>
+                      <div className='data-cell'>{student.totalScore}</div>
                     </td>
                     <td>
-                      <div className="avg-score">{student.avgScore.toFixed(1)}</div>
+                      <div className='avg-score'>
+                        {student.avgScore.toFixed(1)}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -107,39 +231,50 @@ export default function AnalyticsPage() {
           </table>
         </div>
       </div>
-      
+
       {/* Bottom boxes */}
-      <div className="bottom-boxes">
-        <div className="chart-box">
-          <h2 className="chart-title">Pass Percentage</h2>
-          <div className="chart-container">
-            <DonutChart 
-              data={passData} 
-              width={300} 
-              height={300} 
-              centerLabel="Pass Rate" 
+      <div className='bottom-boxes'>
+        <div className='chart-box'>
+          <h2 className='chart-title'>Pass Percentage</h2>
+          <div className='chart-container'>
+            <DonutChart
+              data={passData}
+              width={300}
+              height={300}
+              centerLabel='Pass Rate'
               centerValue={`${passPercentage}%`}
-              showTooltip={true} 
+              showTooltip={true}
             />
           </div>
         </div>
-        
-        <div className="chart-box">
-          <h2 className="chart-title">Average Scores Trend</h2>
-          <div className="chart-container">
-            <BarChart 
-              data={avgScoreData} 
-              width={500} 
-              height={300} 
-              xLabel="Time Period" 
-              yLabel="Average Score" 
+
+        <div className='chart-box'>
+          <h2 className='chart-title'>Average Scores Trend</h2>
+          <div className='chart-container'>
+            <BarChart
+              data={avgScoreData}
+              width={500}
+              height={300}
+              xLabel='Time Period'
+              yLabel='Average Score'
             />
           </div>
-          <div className="overall-avg">
-            <span className="avg-label">Overall Average: </span>
-            <span className="avg-value">{overallAvgScore.toFixed(1)}</span>
+          <div className='overall-avg'>
+            <span className='avg-label'>Overall Average: </span>
+            <span className='avg-value'>{overallAvgScore.toFixed(1)}</span>
           </div>
         </div>
+        <ExportModal
+          isOpen={isExportModalOpen}
+          onClose={() => setIsExportModalOpen(false)}
+          testData={sampleTestData}
+        />
+        <button 
+          className='student-button'
+          onClick={()=>redirect("/Analytics/List/LanguageList/LanguageDetails/StudentList")}
+        >
+          Students List
+        </button>
       </div>
       <style jsx>{`
         /* Base styles */
@@ -147,9 +282,14 @@ export default function AnalyticsPage() {
           padding: 24px;
           background-color: #f9fafb;
           min-height: 100vh;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+            Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
-
+        
+        .analytics-header{
+          display: flex;
+          justify-content : space-between;
+        }
         .page-title {
           font-size: 24px;
           font-weight: 700;
@@ -333,6 +473,15 @@ export default function AnalyticsPage() {
         .avg-value {
           font-weight: 700;
           color: #1f2937;
+        }
+        .student-button {
+          background-color: #2980b9;
+          font-weight: bold;
+          width: max-content;
+          color: white;
+          padding: 10px;
+          border: transparent 0px solid;
+          border-radius: 10px;
         }
       `}</style>
     </div>
