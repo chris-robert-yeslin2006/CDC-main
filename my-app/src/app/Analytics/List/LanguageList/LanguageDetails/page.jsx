@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react'
-import { useSearchParams } from 'next/navigation';
-import { redirect } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import BarChart from '../../../../Statistics/BarChart'
 import DonutChart from '../../../../Statistics/DonutChart'
 
 export default function AnalyticsPage() {
+  const router = useRouter()
   const searchParams = useSearchParams();
   const orgId = searchParams.get('orgId');
   const language = searchParams.get('language');
@@ -147,7 +147,7 @@ export default function AnalyticsPage() {
         </div>
         <button 
           className='student-button'
-          onClick={()=>redirect(`/Analytics/List/LanguageList/LanguageDetails/StudentList?org_id=${orgId}&language=${language}`)}
+          onClick={() => router.push(`/Analytics/List/LanguageList/LanguageDetails/StudentList?orgId=${orgId}&language=${language}`)}
         >
           Students List
         </button>

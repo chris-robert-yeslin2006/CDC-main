@@ -72,7 +72,7 @@ export default function LanguageListPage() {
               className="view-button"
               onClick={() =>
                 router.push(
-                  `/Analytics/List/LanguageList/LanguageDetails?orgId=org123&language=${language.name}`
+                  `/Analytics/List/LanguageList/LanguageDetails?orgId=${orgId}&language=${language.name}`
                 )}
             >
               View Details
