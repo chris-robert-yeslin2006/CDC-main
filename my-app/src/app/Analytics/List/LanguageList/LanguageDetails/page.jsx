@@ -1,10 +1,15 @@
 'use client';
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import BarChart from '../../../../Statistics/BarChart'
 import DonutChart from '../../../../Statistics/DonutChart'
 
 export default function AnalyticsPage() {
+  const searchParams = useSearchParams();
+  const orgId = searchParams.get('orgId');
+  const language = searchParams.get('language');
   // Sample data - replace with your actual data
   const studentCount = 1480
   const testCount = 58
@@ -140,6 +145,12 @@ export default function AnalyticsPage() {
             <span className="avg-value">{overallAvgScore.toFixed(1)}</span>
           </div>
         </div>
+        <button 
+          className='student-button'
+          onClick={()=>redirect(`/Analytics/List/LanguageList/LanguageDetails/StudentList?org_id=${orgId}&language=${language}`)}
+        >
+          Students List
+        </button>
       </div>
       <style jsx>{`
         /* Base styles */
@@ -333,6 +344,15 @@ export default function AnalyticsPage() {
         .avg-value {
           font-weight: 700;
           color: #1f2937;
+        }
+           .student-button {
+          background-color: #2980b9;
+          font-weight: bold;
+          width: max-content;
+          color: white;
+          padding: 10px;
+          border: transparent 0px solid;
+          border-radius: 10px;
         }
       `}</style>
     </div>
