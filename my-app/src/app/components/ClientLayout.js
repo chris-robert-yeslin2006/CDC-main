@@ -14,7 +14,7 @@ export default function ClientLayout({ children }) {
       'organizations-list': '/Organization/List',
       'admin-add': '/Admin/Add',
       'admin-list': '/Admin/List',
-      'analytics': '/Analytics',
+      'analytics': '/Analytics/List',
       'contentManagement': '/Content',
       'systemSettings': '/Settings',
     };
