@@ -9,7 +9,7 @@ import './PDFGeneration.css'
 export default function ExportModal({ isOpen, onClose, testData }) {
   const modalRef = useRef(null)
   const contentRef = useRef(null)
-  
+    
   if (!isOpen) return null
   
   const handlePrint = () => {

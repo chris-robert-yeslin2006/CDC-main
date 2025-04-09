@@ -2,6 +2,7 @@
 
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import ExportModal from "../../../../../components/PDFGeneration/ExportModal"
 
 export default function StudentListPage() {
   const router = useRouter()
@@ -9,10 +10,74 @@ export default function StudentListPage() {
   const orgId = searchParams.get('orgId')
   const language = searchParams.get('language')
   
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false)
   const [students, setStudents] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' })
+
+
+  const sampleTestData = {
+    candidateName: 'John Smith',
+    testDate: '1 January 2022',
+    testId: '12345678',
+    overallScore: 72,
+    cefr: 'B2',
+    overallDescription:
+      'Candidate easily handles a wide variety of discourse and speaking styles, and can contribute to a native-paced discussion. Speech is generally fluent, smooth and clear; candidate controls appropriate language structure for speaking about complex material.',
+    intelligibility: {
+      score: 4,
+      level: 'Good',
+      description:
+        "Listeners may require a little effort at times to understand some of the candidate's speech."
+    },
+    skills: {
+      sentenceMastery: {
+        score: 62,
+        versantScore: 60,
+        cefr: 'B2',
+        description:
+          'Candidate can understand, recall and produce a variety of English phrases and clauses in sentence context. Candidate generally produces accurate and meaningful sentences.',
+        tips: [
+          'Practice describing your educational history using the correct tense (e.g., present perfect, past perfect, past continuous, etc.).',
+          'Practice rephrasing passive sentences into active sentences.'
+        ]
+      },
+      vocabulary: {
+        score: 64,
+        versantScore: 61,
+        cefr: 'B2',
+        description:
+          'Candidate generally understands and can produce most everyday English words as they are used in clear colloquial speech.',
+        tips: [
+          'Verbally summarize the main points of a podcast you listened to, using vocabulary from the podcast.',
+          'Practice telling a well-known story from your culture in English, looking up how to translate any unknown words.'
+        ]
+      },
+      fluency: {
+        score: 49,
+        versantScore: 51,
+        cefr: 'B1',
+        description:
+          'Candidate speaks with adequate rhythm but with some inappropriate phrasing and pausing. Hesitations and possible repetitions or false starts may sometimes interfere with the smooth flow of speech.',
+        tips: [
+          'Practice speaking for a full two minutes without stopping. If you get stuck on a word, try expressing your idea in a different way.',
+          'Listen to short videos of native speakers of English. Try repeating what they say, imitating the pace and the location of pauses.'
+        ]
+      },
+      pronunciation: {
+        score: 69,
+        versantScore: 64,
+        cefr: 'B2+',
+        description:
+          'Candidate produces most vowels and consonants in a clear manner, although an occasional mispronunciation may occur. Stress is placed correctly in most common words.',
+        tips: [
+          'Look up commonly mispronounced words in English and learn how to say them correctly.',
+          "Listen to a video clip of a native English speaker. Pause the video after each sentence and repeat it exactly, imitating the speaker's rhythm."
+        ]
+      }
+    }
+  }
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -76,6 +141,9 @@ export default function StudentListPage() {
   const getSortIndicator = (key) => {
     if (sortConfig.key !== key) return null
     return sortConfig.direction === 'ascending' ? ' ↑' : ' ↓'
+  }
+  const handleExportClick = () => {
+    setIsExportModalOpen(true)
   }
 
   return (
@@ -249,7 +317,11 @@ export default function StudentListPage() {
         <h1 className="language-title">
           {language} Language Students
         </h1>
-        
+        <ExportModal
+          isOpen={isExportModalOpen}
+          onClose={() => setIsExportModalOpen(false)}
+          testData={sampleTestData}
+        />
         <div className="search-container">
           <svg className="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -324,9 +396,11 @@ export default function StudentListPage() {
                   <td>
                     <button 
                       className="performance-button"
-                      onClick={() => navigateToAnalysis(student.id)}
+                      onClick={() => {
+                        handleExportClick()
+                      }}
                     >
-                      View Analysis
+                      Export Data
                       <svg className="button-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
                       </svg>
@@ -338,6 +412,7 @@ export default function StudentListPage() {
           </table>
         </div>
       )}
+       
     </div>
   )
 }
