@@ -2,7 +2,7 @@ export default function SkillDetails({ name, data }) {
   return (
     <div className="skill-card">
       <div className="skill-card-header">
-        <div className="skill-name">{name}</div>
+        <div className="skill-name">{name}:</div>
         <div className="skill-scores">
           <div className="gse-score">GSE: {data.score}/90</div>
           <div className="versant-score">Versant: {data.versantScore}/80</div>
