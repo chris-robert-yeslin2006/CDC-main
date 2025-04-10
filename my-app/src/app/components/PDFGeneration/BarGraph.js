@@ -1,5 +1,4 @@
 export default function BarGraph({ name, score }) {
-    // Simple scaling for visual representation
     const percentage = ((score - 10) / 80) * 100 // Scale from 10-90
     const barHeight = `${percentage}%`
   
