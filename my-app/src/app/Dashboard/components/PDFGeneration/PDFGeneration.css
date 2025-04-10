@@ -14,9 +14,9 @@ body {
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+  max-width: 100%;
+  margin: 0;
+  padding: 1rem 0.5rem;
 }
 
 /* Card styles */
@@ -24,7 +24,7 @@ body {
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
-  max-width: 800px;
+  max-width: 100%;
   margin: 0 auto;
   border: 1px solid #eaeaea;
 }
@@ -54,7 +54,7 @@ body {
 .intro-text {
   text-align: center;
   margin-bottom: 2rem;
-  max-width: 600px;
+  max-width: 100%;
 }
 
 .preview-button {
@@ -74,19 +74,17 @@ body {
 
 /* Report container */
 .report-container {
-  max-width: 850px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   background: white;
-  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #eaeaea;
 }
 
 /* Report header */
 .report-header {
   background-color: #fff;
-  padding: 20px;
-  border-bottom: 1px solid #eaeaea;
+  padding: 20px 10px;
+  border-bottom: 5px solid #ff6a00;
 }
 
 .header-content {
@@ -99,13 +97,10 @@ body {
   display: flex;
   flex-direction: column;
   width: 50%;
-  align-items: end;
 }
 
-.candidate-details {
+.candidate-Details {
   display: flex;
-      flex-direction: column;
-      align-items: end;
 }
 
 .candidate-info p {
@@ -114,6 +109,7 @@ body {
 }
 .report-body{
   display: flex;
+  margin-top: 20px;
 }
 .report-title {
   font-size: 24px;
@@ -131,19 +127,20 @@ body {
 .left-column {
   flex: 1;
   min-width: 300px;
-  padding: 20px;
+  padding: 15px 10px;
 }
 
 .right-column {
   flex: 1;
   min-width: 300px;
-  padding: 20px;
+  padding: 15px 10px;
   background-color: #f9f9f9;
 }
 
 /* Overall score section */
 .overall-score-section {
   background-color: #ffffff;
+  width: 95%;
 }
 
 .overall-score-header {
@@ -152,7 +149,7 @@ body {
   background-color: #f9f9f9;
   padding: 10px;
   border-radius: 4px;
-  gap: 30px;
+  gap: 20px;
 }
 
 .score-display {
@@ -188,7 +185,8 @@ body {
   border-radius: 4px;
   font-weight: bold;
   position: relative;
-  left: 25%;
+  left: 10%;
+  top: -20px;
 }
 
 .overall-description {
@@ -258,76 +256,9 @@ body {
   color: #555;
 }
 
-/* Score bars section */
-.score-bars-section {
-  padding: 20px;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.score-bars-title {
-  font-size: 18px;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.bar-graph-wrapper {
+.skillspage{
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 25px 10px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  margin-bottom: 20px;
 }
-
-.bar-graph-container {
-  display: inline-block;
-  text-align: center;
-  width: 100px;
-}
-
-.bar-graph-visual {
-  position: relative;
-  height: 160px;
-  width: 40px;
-  margin: 0 auto;
-  background-color: #f0f0f0;
-  border-radius: 4px 4px 0 0;
-  border: 1px solid #e0e0e0;
-}
-
-.bar-graph-fill {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 0;
-  border-radius: 3px 3px 0 0;
-}
-
-.bar-graph-label {
-  margin-top: 15px;
-  font-weight: 600;
-  font-size: 0.9em;
-  word-wrap: break-word;
-  line-height: 1.3;
-  height: 2.6em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #2c3e50;
-}
-
-.bar-graph-value {
-  font-size: 1em;
-  color: #3498db;
-  font-weight: 600;
-  background-color: #f0f4f8;
-  padding: 4px 12px;
-  border-radius: 12px;
-  display: inline-block;
-  margin-top: 8px;
-}
-
 .score-bar-container {
   margin-bottom: 15px;
 }
@@ -363,7 +294,7 @@ body {
 }
 
 .score-scale {
-  display: flex;
+  display: none;
   justify-content: space-between;
   margin-top: 5px;
   font-size: 12px;
@@ -372,7 +303,8 @@ body {
 
 /* Skill details section */
 .skill-details-section {
-  padding: 20px;
+  padding: 10px;
+  width: 100%;
 }
 
 .skill-details-title {
@@ -415,6 +347,15 @@ body {
   padding: 7px;
   border-radius: 10px;
 }
+.gse-score:nth-of-type(2){
+  background-color: #419CB2;
+}
+.gse-score:nth-of-type(3){
+  background-color: #8A4B9D;
+}
+.gse-score:nth-child(4){
+  background-color: #AD3B59;
+}
 
 .versant-score,
 .cefr-level {
@@ -441,6 +382,7 @@ body {
 
 .skill-tips-list {
   list-style-type: none;
+  padding-left: 5px;
 }
 
 .skill-tips-list li {
@@ -485,9 +427,9 @@ body {
 .modal-container {
   background-color: white;
   border-radius: 8px;
-  width: 90%;
-  max-width: 900px;
-  max-height: 90vh;
+  width: 95%;
+  max-width: 95%;
+  max-height: 95vh;
   overflow-y: auto;
   position: relative;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -497,7 +439,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 15px 10px;
   border-bottom: 1px solid #eaeaea;
 }
 
@@ -513,14 +455,20 @@ body {
   font-size: 24px;
   cursor: pointer;
   color: #777;
+  float: right;
 }
 
 .modal-content {
-  padding: 20px;
+  padding: 10px;
+  width: 100%;
+}
+
+.score-report-container {
+  width: 100%;
 }
 
 .modal-actions {
-  padding: 15px 20px;
+  padding: 15px 10px;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -570,7 +518,159 @@ body {
 .pdf-page {
   width: 210mm;
   min-height: 297mm;
-  padding: 20mm;
-  margin: 10mm auto;
+  padding: 5mm;
   background: white;
 }
+.chart-container {
+  border-radius: 8px;
+  margin-left: 10px;
+}
+
+
+.chart-content {
+  top: 30px;
+  height: 400px;
+  position: relative;
+  margin-bottom: 30px;
+}
+.score-bars-section{
+  width: 100%;
+}
+.score-bars-title{
+  margin-left: 10px;
+}
+.chart-area {
+  display: flex;
+  height: 250px;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 10px;
+  height: 100%;
+}
+
+.y-label {
+  font-size: 14px;
+  color: #718096;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.chart-grid {
+  flex: 1;
+  position: relative;
+  height: 100%;
+}
+
+.grid-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.bars-container {
+  display: flex;
+  justify-content: space-around;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.bar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.bar {
+  width: 60px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  position: absolute;
+  bottom: 0;
+  transition: height 0.5s ease;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.bar-value {
+  color: white;
+  font-weight: 500;
+  padding-top: 5px;
+  font-size: 14px;
+}
+
+.x-label {
+  position: absolute;
+  bottom: -25px;
+  font-size: 14px;
+  color: #718096;
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.x-axis-title {
+  text-align: center;
+  margin-top: 30px;
+  color: #4a5568;
+  font-size: 14px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  font-size: 16px;
+  color: #718096;
+}
+
+/* Add styles for skill-content-container */
+.skill-content-container {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.skill-details {
+  flex: 3;
+}
+
+.skill-understanding {
+  flex: 2;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.understanding-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 8px;
+}
+
+.understanding-text {
+  color: #4a5568;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .skill-content-container {
+    flex-direction: column;
+  }
+} 
