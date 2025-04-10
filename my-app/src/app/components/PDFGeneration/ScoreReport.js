@@ -1,5 +1,6 @@
 import ScoreBar from './ScoreBar'
 import SkillDetails from './SkillDetails'
+import SkillUnderstanding from './SkillUnderstanding'
 export default function ScoreReport ({ data }) {
   return (
     <div className='report-container'>
@@ -24,6 +25,7 @@ export default function ScoreReport ({ data }) {
         </div>
       </div>
 
+    <div className='report-body'>
       <div className='overall-score-section'>
         <div className='overall-score-header'>
           <div className='score-display'>
@@ -34,20 +36,22 @@ export default function ScoreReport ({ data }) {
           <p className='overall-description'>{data.overallDescription}</p>
         </div>
 
-        <div className='intelligibility'>
-          <div className='intelligibility-header'>
-            <div className='intelligibility-title'>Intelligibility:</div>
-            <div className='intelligibility-score'>
+          <div className='overall-score-header'>
+            <div className='score-display'>
+            <h2 className='overall'>Intelligibility:</h2>
+            <div className='overall-score'>
               {data.intelligibility.score}
             </div>
-            <div className='intelligibility-level'>
+            <div className='cefr-badge'>
               {data.intelligibility.level}
             </div>
           </div>
-          <p className='intelligibility-description'>
+          <p className='overall-description'>
             {data.intelligibility.description}
           </p>
         </div>
+      </div>
+      <SkillUnderstanding/>
       </div>
 
       <div className='score-bars-section'>
