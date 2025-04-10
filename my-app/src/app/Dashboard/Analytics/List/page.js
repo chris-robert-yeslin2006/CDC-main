@@ -24,7 +24,7 @@ export default function AnalyticsOrgList() {
   }, []);
 
   const handleViewDetails = (orgId) => {
-    router.push(`/Analytics/List/LanguageList?orgId=${orgId}`);
+    router.push(`/Dashboard/Analytics/List/LanguageList?orgId=${orgId}`);
   };
 
   return (

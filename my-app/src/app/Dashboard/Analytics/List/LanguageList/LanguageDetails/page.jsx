@@ -147,7 +147,7 @@ export default function AnalyticsPage() {
         </div>
         <button 
           className='student-button'
-          onClick={() => router.push(`/Analytics/List/LanguageList/LanguageDetails/StudentList?orgId=${orgId}&language=${language}`)}
+          onClick={() => router.push(`/Dashboard/Analytics/List/LanguageList/LanguageDetails/StudentList?orgId=${orgId}&language=${language}`)}
         >
           Students List
         </button>

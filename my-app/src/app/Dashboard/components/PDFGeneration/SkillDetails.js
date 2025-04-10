@@ -62,4 +62,4 @@ export default function SkillDetails({ name, data }) {
       </div>
     </div>
   )
-}wads
+}
