@@ -1,12 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
-export default function StudentList({ searchParams }) {
-  const orgId = searchParams.orgId
-  const language = searchParams.language
+export default function StudentList() {
+  const searchParams = useSearchParams()
+  const orgId = searchParams.get('orgId')
+  const language = searchParams.get('language')
+  
   const [students, setStudents] = useState([])
   const [filtered, setFiltered] = useState([])
   const [loading, setLoading] = useState(true)
@@ -30,7 +33,9 @@ export default function StudentList({ searchParams }) {
       }
     }
 
-    fetchStudents()
+    if (orgId && language) {
+      fetchStudents()
+    }
   }, [orgId, language])
 
   const generateStudentPDF = (student, shouldDownload = false) => {
