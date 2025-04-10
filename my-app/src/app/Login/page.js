@@ -9,17 +9,42 @@ export default function Login() {
   const [keepSignedIn, setKeepSignedIn] = useState(false);
   const router = useRouter();
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Mock API response - hardcoded as true per requirements
-    const apiResponse = { isAuthorized: true };
-    
-    if (apiResponse.isAuthorized) {
-      // Navigate to dashboard or home page when authorized
+  
+    try {
+      const response = await fetch('http://localhost:8000/auth/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: new URLSearchParams({
+          email,
+          password
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+  
+      const data = await response.json();
+      const token = data.access_token;
+  
+      // Save the token (you can use localStorage or cookies)
+      if (keepSignedIn) {
+        localStorage.setItem('accessToken', token);
+      } else {
+        sessionStorage.setItem('accessToken', token);
+      }
+  
+      // Redirect to Dashboard
       router.push('/Dashboard');
+    } catch (err) {
+      alert(err.message || 'Login failed');
     }
   };
+  
 
   return (
     <div className={styles.container}>
