@@ -34,7 +34,7 @@ export default function AdminListPage() {
                 <td className="org-name">{org.name}</td>
                 <td>{org.ambassador_name}</td>
                 <td className="actions-cell">
-                  <Link href={`/Admin/List/AdminDetails?page=${org.id}`}>
+                  <Link href={`/Dashboard/Admin/List/AdminDetails?page=${org.id}`}>
                     <button className="edit-button">View Admins</button>
                   </Link>
                 </td>
