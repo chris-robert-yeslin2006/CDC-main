@@ -57,9 +57,9 @@ export default function StudentListPage() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' })
+  const [processingExport, setProcessingExport] = useState(false)
 
-
-  // Then in your useEffect:
+  // Fetch students data
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -92,6 +92,158 @@ export default function StudentListPage() {
       fetchStudents()
     }
   }, [orgId, language])
+
+  // Add this new function to fetch tips from Gemini API
+  const fetchAITips = async (score, skillType, studentName) => {
+    try {
+      // Determine the level based on score
+      let level
+      if (score < 40) level = 'low'
+      else if (score < 70) level = 'medium'
+      else level = 'high'
+      
+      // Create a prompt for the Gemini API
+      const prompt = `Generate 3 personalized tips to help ${studentName} improve their English ${skillType} skills. 
+      Their current level is ${level} (score: ${score}/100). 
+      Each tip should be specific, actionable, and no more than 15 words long.`
+      
+      // Make the API call to Gemini
+      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyDbDVrCM0qEnHhy7tbjg5BgTThNiPZyh9I", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: prompt
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 200
+          }
+        })
+      })
+      
+      const data = await response.json()
+      
+      // Extract tips from the response
+      if (data.candidates && data.candidates[0]?.content?.parts && data.candidates[0].content.parts[0]?.text) {
+        const tipsText = data.candidates[0].content.parts[0].text
+        // Split by line breaks or numbered items
+        const tipLines = tipsText.split(/\n|(?=\d\.)/g)
+          .filter(line => line.trim().length > 0)
+          .map(line => line.replace(/^\d+\.\s*/, '').trim())
+          .slice(0, 3) // Ensure we have at most 3 tips
+        console.log(tipLines)
+        
+        return tipLines.length > 0 ? tipLines : getFallbackTips(skillType, level)
+      }
+      
+      return getFallbackTips(skillType, level)
+    } catch (error) {
+      console.error('Error fetching AI tips:', error)
+      return getFallbackTips(skillType, level)
+    }
+  }
+
+  // Fallback function to use if AI fails
+  const getFallbackTips = (skillType, level) => {
+    const tipsByLevel = {
+      sentenceMastery: {
+        low: [
+          'Practice constructing simple sentences using subject-verb-object structure.',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+          'Use language learning apps to practice building sentences daily.'
+        ],
+        medium: [
+          'Practice describing your educational history using the correct tense.',
+          'Join conversation groups to practice complex sentences in real contexts.',
+          'Practice rephrasing passive sentences into active sentences.'
+        ],
+        high: [
+          'Practice using complex conditional sentences in conversation.',
+          'Record yourself explaining complex topics to improve sentence structure.',
+          'Master the use of reported speech and different reporting verbs.'
+        ]
+      },
+      vocabulary: {
+        low: [
+          'Build a list of 10 new words each week and practice using them.',
+          'Use flashcards to learn common everyday words and phrases.',
+          'Label objects in your home with English names and read them aloud daily.'
+        ],
+        medium: [
+          'Verbally summarize podcasts using vocabulary from the content.',
+          'Read news articles and highlight unfamiliar words to learn.',
+          'Practice telling stories from your culture in English.'
+        ],
+        high: [
+          'Practice explaining complex concepts using precise terminology.',
+          'Build vocabulary in specific professional or academic domains.',
+          'Learn idiomatic expressions and incorporate them naturally into speech.'
+        ]
+      },
+      fluency: {
+        low: [
+          'Read aloud for 5 minutes daily without pausing between words.',
+          'Practice speaking with simple tongue twisters to build rhythm.',
+          'Record short daily voice notes about your routine.'
+        ],
+        medium: [
+          'Join conversation groups to practice speaking without preparation.',
+          'Record yourself retelling the plot of a movie or book.',
+          'Practice impromptu speeches on familiar topics for 2-3 minutes.'
+        ],
+        high: [
+          'Record debates with yourself arguing different perspectives fluently.',
+          'Practice speaking on complex topics without filler words.',
+          'Join Toastmasters or similar groups for advanced speaking practice.'
+        ]
+      },
+      pronunciation: {
+        low: [
+          'Practice English vowel sounds for 10 minutes daily.',
+          'Use pronunciation apps to get feedback on specific sounds.',
+          'Record yourself reading simple texts and compare with native speakers.'
+        ],
+        medium: [
+          'Look up commonly mispronounced words and practice them correctly.',
+          'Practice word stress patterns in 3-4 syllable words.',
+          'Use shadowing technique with podcast speakers to match rhythm.'
+        ],
+        high: [
+          'Focus on mastering word stress in multi-syllable academic words.',
+          'Practice intonation patterns for questions and statements.',
+          'Record professional presentations and refine pronunciation of technical terms.'
+        ]
+      }
+    }
+    
+    return tipsByLevel[skillType][level] || []
+  }
+
+  // Modify the existing getTips function to use AI when possible
+  const getTips = async (score, skillType, studentName = "the student") => {
+    // First try to get AI-generated tips
+    try {
+      const aiTips = await fetchAITips(score, skillType, studentName)
+      return aiTips
+    } catch (error) {
+      console.error('Error in AI tips generation, falling back to static tips:', error)
+      
+      // Determine level based on score
+      let level
+      if (score < 40) level = 'low'
+      else if (score < 70) level = 'medium'
+      else level = 'high'
+      
+      // Fall back to predefined tips
+      return getFallbackTips(skillType, level)
+    }
+  }
 
   // CEFR mapping function
   const getCEFRLevel = (score) => {
@@ -156,21 +308,21 @@ export default function StudentListPage() {
   // Get overall description based on overall score
   const getOverallDescription = (score) => {
     if (score >= 80) {
-      return 'Candidate handles complex language with ease and speaks fluently with a high degree of accuracy. Can contribute fully to native-paced discussions and produce complex language structures appropriately.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
+      return 'Candidate handles complex language with ease and speaks fluently with a high degree of accuracy. Can contribute fully to native-paced discussions and produce complex language structures appropriately.'
     } else if (score >= 70) {
-      return 'Candidate easily handles a wide variety of discourse and speaking styles, and can contribute to a native-paced discussion. Speech is generally fluent, smooth and clear; candidate controls appropriate language structure for speaking about complex material.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
+      return 'Candidate easily handles a wide variety of discourse and speaking styles, and can contribute to a native-paced discussion. Speech is generally fluent, smooth and clear; candidate controls appropriate language structure for speaking about complex material.'
     } else if (score >= 60) {
-      return 'Candidate can handle most communicative tasks and discourse types. Can contribute to a native-paced discussion. Speech is mostly fluent with some minor hesitations; candidate demonstrates good control of various language structures.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
+      return 'Candidate can handle most communicative tasks and discourse types. Can contribute to a native-paced discussion. Speech is mostly fluent with some minor hesitations; candidate demonstrates good control of various language structures.'
     } else if (score >= 50) {
-      return 'Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing. Can contribute to discussions on a range of topics. Speech is generally clear with some fluency problems.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
+      return 'Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing. Can contribute to discussions on a range of topics. Speech is generally clear with some fluency problems.'
     } else if (score >= 40) {
-      return 'Candidate can handle basic communicative tasks and straightforward discussions on concrete topics. Speech contains pauses and hesitations with limited sentence complexity and vocabulary.Speech is generally clear with some fluency problems.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
+      return 'Candidate can handle basic communicative tasks and straightforward discussions on concrete topics. Speech contains pauses and hesitations with limited sentence complexity and vocabulary.'
     } else if (score >= 30) {
-      return 'Candidate can handle simple communicative tasks on familiar topics. Speech is marked by noticeable pauses, simple structures, and limited vocabulary.Candidate handles complex language with ease and speaks fluently with a high degree of accuracySpeech is generally clear with some fluency problems.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
+      return 'Candidate can handle simple communicative tasks on familiar topics. Speech is marked by noticeable pauses, simple structures, and limited vocabulary.'
     } else if (score >= 20) {
       return 'Candidate can communicate minimally with simple words and phrases. Speech contains frequent pauses and is often difficult to follow.'
     } else {
-      return 'Candidate shows minimal ability to communicate in English. Speech may be unintelligible or consist of isolated words.Speech is generally clear with some fluency problems.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
+      return 'Candidate shows minimal ability to communicate in English. Speech may be unintelligible or consist of isolated words.'
     }
   }
 
@@ -180,120 +332,33 @@ export default function StudentListPage() {
       return {
         score: 5,
         level: 'Excellent',
-        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing. Can contribute to discussions on a range of topics. Speech is generally clear with some fluency problems.'"
+        description: "Speaker is easily understood. Pronunciation is clear with appropriate stress and intonation patterns. Accent may be noticeable but does not affect comprehensibility."
       }
     } else if (overallScore >= 60) {
       return {
         score: 4,
         level: 'Good',
-        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing."
+        description: "Speaker is generally easily understood. Occasional mispronunciations or rhythm issues may occur but rarely affect overall comprehensibility."
       }
     } else if (overallScore >= 40) {
       return {
         score: 3,
         level: 'Fair',
-        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing. "
+        description: "Speaker can be understood with some effort. Pronunciation issues occasionally interfere with communication, requiring occasional repetition or clarification."
       }
     } else if (overallScore >= 20) {
       return {
         score: 2,
         level: 'Poor',
-        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing."
+        description: "Speaker is difficult to understand. Frequent pronunciation issues significantly impact communication, requiring regular repetition and clarification."
       }
     } else {
       return {
         score: 1,
         level: 'Unintelligible',
-        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing."
+        description: "Speaker is very difficult to understand. Severe pronunciation issues make communication nearly impossible without extensive repetition and guesswork."
       }
     }
-  }
-
-  // Get tips based on score
-  const getTips = (score, skillType) => {
-    const tipsByLevel = {
-      sentenceMastery: {
-        low: [
-          'Practice constructing simple sentences using subject-verb-object structure.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.'
-        ],
-        medium: [
-          'Practice describing your educational history using the correct tense (e.g., present perfect, past perfect, past continuous, etc.).',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-          'Practice rephrasing passive sentences into active sentences.'
-        ],
-        high: [
-          'Practice using complex conditional sentences in conversation.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-          'Master the use of reported speech and different reporting verbs.'
-        ]
-      },
-      vocabulary: {
-        low: [
-          'Build a list of 10 new words each week and practice using them in sentences.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-          'Label objects in your home with English names and read them aloud daily.'
-        ],
-        medium: [
-          'Verbally summarize the main points of a podcast you listened to, using vocabulary from the podcast.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-          'Practice telling a well-known story from your culture in English, looking up how to translate any unknown words.'
-        ],
-        high: [
-          'Practice explaining complex concepts using precise terminology.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-          'Learn idiomatic expressions and incorporate them naturally into your speech.'
-        ]
-      },
-      fluency: {
-        low: [
-          'Read aloud for 5 minutes daily, focusing on speaking without pausing between words.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.'
-        ],
-        medium: [
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.'
-        ],
-        high: [
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.'
-        ]
-      },
-      pronunciation: {
-        low: [
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts..'
-        ],
-        medium: [
-          'Look up commonly mispronounced words in English and learn how to say them correctly.',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-
-          "Learn and practice basic verb tenses (present, past, future) in simple contexts."
-        ],
-        high: [
-          'Focus on mastering word stress in multi-syllable past, future) in simple contexts .',
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
-
-          'Learn and practice basic verb tenses (present, past, future) in simple contexts..'
-        ]
-      }
-    }
-    
-    let level
-    if (score < 40) level = 'low'
-    else if (score < 70) level = 'medium'
-    else level = 'high'
-    
-    return tipsByLevel[skillType][level] || []
   }
 
   const navigateToAnalysis = (studentId) => {
@@ -342,63 +407,81 @@ export default function StudentListPage() {
     return sortConfig.direction === 'ascending' ? ' ↑' : ' ↓'
   }
   
-  const handleExportClick = (student) => {
-    // Prepare the test data object with the student's data
-    const overallScore = Math.round(student.overall_mark) || 0
-    const fluencyScore = Math.round(student.fluency_mark) || 0
-    const vocabScore = Math.round(student.vocab_mark) || 0
-    const sentenceMasteryScore = Math.round(student.sentence_mastery) || 0
-    const pronunciationScore = Math.round(student.pronunciation) || 0
-    
-    const cefrOverall = getCEFRLevel(overallScore)
-    const cefrSentenceMastery = getCEFRLevel(sentenceMasteryScore)
-    const cefrVocabulary = getCEFRLevel(vocabScore)
-    const cefrFluency = getCEFRLevel(fluencyScore)
-    const cefrPronunciation = getCEFRLevel(pronunciationScore)
-    
-    // Update the test data with the student's information
-    setTestData({
-      candidateName: student.name,
-      testDate: new Date().toLocaleDateString(), // Or get actual test date if available
-      testId: student.id || 'N/A',
-      overallScore: overallScore,
-      cefr: cefrOverall,
-      overallDescription: getOverallDescription(overallScore),
-      intelligibility: getIntelligibility(overallScore),
-      skills: {
-        sentenceMastery: {
-          score: sentenceMasteryScore,
-          versantScore: Math.round(sentenceMasteryScore * 0.95), // Example calculation
-          cefr: cefrSentenceMastery,
-          description: getDescription(cefrSentenceMastery, 'sentenceMastery'),
-          tips: getTips(sentenceMasteryScore, 'sentenceMastery')
-        },
-        vocabulary: {
-          score: vocabScore,
-          versantScore: Math.round(vocabScore * 0.95), // Example calculation
-          cefr: cefrVocabulary,
-          description: getDescription(cefrVocabulary, 'vocabulary'),
-          tips: getTips(vocabScore, 'vocabulary')
-        },
-        fluency: {
-          score: fluencyScore,
-          versantScore: Math.round(fluencyScore * 0.95), // Example calculation
-          cefr: cefrFluency,
-          description: getDescription(cefrFluency, 'fluency'),
-          tips: getTips(fluencyScore, 'fluency')
-        },
-        pronunciation: {
-          score: pronunciationScore,
-          versantScore: Math.round(pronunciationScore * 0.95), // Example calculation
-          cefr: cefrPronunciation,
-          description: getDescription(cefrPronunciation, 'pronunciation'),
-          tips: getTips(pronunciationScore, 'pronunciation')
+  const handleExportClick = async (student) => {
+    try {
+      // Show processing state
+      setProcessingExport(true)
+      
+      // Prepare the test data object with the student's data
+      const overallScore = Math.round(student.overall_mark) || 0
+      const fluencyScore = Math.round(student.fluency_mark) || 0
+      const vocabScore = Math.round(student.vocab_mark) || 0
+      const sentenceMasteryScore = Math.round(student.sentence_mastery) || 0
+      const pronunciationScore = Math.round(student.pronunciation) || 0
+      
+      const cefrOverall = getCEFRLevel(overallScore)
+      const cefrSentenceMastery = getCEFRLevel(sentenceMasteryScore)
+      const cefrVocabulary = getCEFRLevel(vocabScore)
+      const cefrFluency = getCEFRLevel(fluencyScore)
+      const cefrPronunciation = getCEFRLevel(pronunciationScore)
+      
+      // Get AI-generated tips for each skill area
+      const [sentenceMasteryTips, vocabularyTips, fluencyTips, pronunciationTips] = await Promise.all([
+        getTips(sentenceMasteryScore, 'sentenceMastery', student.name),
+        getTips(vocabScore, 'vocabulary', student.name),
+        getTips(fluencyScore, 'fluency', student.name),
+        getTips(pronunciationScore, 'pronunciation', student.name)
+      ])
+      
+      // Update the test data with the student's information and AI tips
+      setTestData({
+        candidateName: student.name,
+        testDate: new Date().toLocaleDateString(), // Or get actual test date if available
+        testId: student.id || 'N/A',
+        overallScore: overallScore,
+        cefr: cefrOverall,
+        overallDescription: getOverallDescription(overallScore),
+        intelligibility: getIntelligibility(overallScore),
+        skills: {
+          sentenceMastery: {
+            score: sentenceMasteryScore,
+            versantScore: Math.round(sentenceMasteryScore * 0.95), // Example calculation
+            cefr: cefrSentenceMastery,
+            description: getDescription(cefrSentenceMastery, 'sentenceMastery'),
+            tips: sentenceMasteryTips
+          },
+          vocabulary: {
+            score: vocabScore,
+            versantScore: Math.round(vocabScore * 0.95), // Example calculation
+            cefr: cefrVocabulary,
+            description: getDescription(cefrVocabulary, 'vocabulary'),
+            tips: vocabularyTips
+          },
+          fluency: {
+            score: fluencyScore,
+            versantScore: Math.round(fluencyScore * 0.95), // Example calculation
+            cefr: cefrFluency,
+            description: getDescription(cefrFluency, 'fluency'),
+            tips: fluencyTips
+          },
+          pronunciation: {
+            score: pronunciationScore,
+            versantScore: Math.round(pronunciationScore * 0.95), // Example calculation
+            cefr: cefrPronunciation,
+            description: getDescription(cefrPronunciation, 'pronunciation'),
+            tips: pronunciationTips
+          }
         }
-      }
-    })
-    
-    // Open the export modal
-    setIsExportModalOpen(true)
+      })
+      
+      // Open the export modal
+      setIsExportModalOpen(true)
+    } catch (error) {
+      console.error('Error preparing export data:', error)
+      alert('There was an error preparing the export data. Please try again.')
+    } finally {
+      setProcessingExport(false)
+    }
   }
 
   return (
@@ -566,11 +649,39 @@ export default function StudentListPage() {
         width: 16px;
         height: 16px;
       }
+      
+      .button-loading {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+      
+      .ai-badge {
+        background-color: #10b981;
+        color: white;
+        font-size: 12px;
+        padding: 2px 6px;
+        border-radius: 9999px;
+        margin-left: 8px;
+        display: inline-flex;
+        align-items: center;
+      }
+      
+      .ai-icon {
+        width: 12px;
+        height: 12px;
+        margin-right: 4px;
+      }
     `}</style>
 
       <div className="header-container">
         <h1 className="language-title">
           {language} Language Students
+          <span className="ai-badge">
+            <svg className="ai-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            AI-Enhanced
+          </span>
         </h1>
         <ExportModal
           isOpen={isExportModalOpen}

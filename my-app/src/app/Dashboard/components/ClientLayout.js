@@ -26,8 +26,9 @@ export default function ClientLayout({ children }) {
 
   const userProfile = {
     avatar: '👤',
-    name: 'John Doe',
-    role: 'Admin',
+    name: 'Surya',
+    email: 'admin@example.com',
+    role: 'Super Admin',
   };
 
   return (
