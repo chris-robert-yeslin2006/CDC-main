@@ -6,8 +6,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-    "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   color: #333;
   background-color: #f5f5f5;
@@ -17,6 +17,86 @@ body {
   max-width: 100%;
   margin: 0;
   padding: 1rem 0.5rem;
+}
+
+/* Logo section styles */
+.logo-section {
+  align-items: center;
+  position: relative;
+  border-bottom: 2px solid #ff6a00;
+}
+
+.logo-icon {
+  display: flex;
+  position: relative;
+  width: 50px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.logo-text {
+  font-family: Georgia, Times, serif;
+  color: #116793;
+  display: flex
+;
+  align-items: baseline;
+  font-weight: bold;
+  display: flex
+;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.logo-brand {
+  font-size: 52px;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  position: relative;
+  top: -20px;
+}
+
+.logo-tm {
+  font-size: 10px;
+  vertical-align: super;
+  margin-left: 1px;
+}
+
+.candidate-header-info {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  text-align: right;
+}
+
+.candidate-name {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.test-details {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+}
+
+.test-date-label,
+.test-id-label {
+  color: #666;
+  font-size: 11px;
+}
+
+.test-date-value,
+.test-id-value {
+  font-weight: 500;
+}
+
+.language-test-title {
+  background-color: white;
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 /* Card styles */
@@ -76,15 +156,17 @@ body {
 .report-container {
   max-width: 100%;
   margin: 0;
+  padding: 0;
   background: white;
   overflow: hidden;
 }
 
 /* Report header */
 .report-header {
+  padding: 15px 5px;
   background-color: #fff;
-  padding: 20px 10px;
-  border-bottom: 5px solid #ff6a00;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
 }
 
 .header-content {
@@ -96,20 +178,28 @@ body {
 .candidate-info {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  align-content: flex-end;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
-
+.bold {
+  font-weight: bold;
+}
 .candidate-Details {
   display: flex;
+  gap: 10px;
 }
 
 .candidate-info p {
   margin: 5px 0;
   color: #444;
 }
-.report-body{
+.report-body {
   display: flex;
-  margin-top: 20px;
+  margin-top: 10px;
+  padding: 0 5px;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
 }
 .report-title {
   font-size: 24px;
@@ -141,12 +231,13 @@ body {
 .overall-score-section {
   background-color: #ffffff;
   width: 95%;
+  padding: 0 5px;
 }
 
 .overall-score-header {
   display: flex;
   margin-bottom: 15px;
-  background-color: #f9f9f9;
+  background-color: #efefefcc;
   padding: 10px;
   border-radius: 4px;
   gap: 20px;
@@ -175,7 +266,7 @@ body {
   position: relative;
   left: 30%;
 }
-.overall{
+.overall {
   font-size: 1rem;
   width: max-content;
 }
@@ -256,7 +347,7 @@ body {
   color: #555;
 }
 
-.skillspage{
+.skillspage {
   display: flex;
 }
 .score-bar-container {
@@ -303,8 +394,10 @@ body {
 
 /* Skill details section */
 .skill-details-section {
-  padding: 10px;
+  padding: 5px;
   width: 100%;
+  break-inside: auto !important;
+  page-break-inside: auto !important;
 }
 
 .skill-details-title {
@@ -314,16 +407,20 @@ body {
 }
 
 .skill-card {
-  padding: 15px;
-  margin-bottom: 15px;
+  padding: 10px;
+  margin-bottom: 15px !important;
   border-bottom: 1px solid black;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
 }
 
 .skill-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  width: 50%;
+  gap: 20px;
+  justify-content: space-between;
 }
 
 .skill-name {
@@ -347,14 +444,14 @@ body {
   padding: 7px;
   border-radius: 10px;
 }
-.gse-score:nth-of-type(2){
-  background-color: #419CB2;
+.gse-score:nth-of-type(2) {
+  background-color: #419cb2;
 }
-.gse-score:nth-of-type(3){
-  background-color: #8A4B9D;
+.gse-score:nth-of-type(3) {
+  background-color: #8a4b9d;
 }
-.gse-score:nth-child(4){
-  background-color: #AD3B59;
+.gse-score:nth-child(4) {
+  background-color: #ad3b59;
 }
 
 .versant-score,
@@ -395,7 +492,7 @@ body {
 }
 
 .skill-tips-list li::before {
-  content: "•";
+  content: '•';
   position: absolute;
   left: 0;
   color: #3498db;
@@ -526,17 +623,18 @@ body {
   margin-left: 10px;
 }
 
-
 .chart-content {
   top: 30px;
   height: 400px;
   position: relative;
   margin-bottom: 30px;
 }
-.score-bars-section{
+.score-bars-section {
   width: 100%;
+  margin-left: 30px;
+  padding: 0 5px;
 }
-.score-bars-title{
+.score-bars-title {
   margin-left: 10px;
 }
 .chart-area {
@@ -640,9 +738,11 @@ body {
 /* Add styles for skill-content-container */
 .skill-content-container {
   display: flex;
-  gap: 15px;
+  gap: 10px;
   margin-top: 10px;
   width: 100%;
+  break-inside: avoid !important;
+  page-break-inside: avoid !important;
 }
 
 .skill-details {
@@ -651,7 +751,7 @@ body {
 
 .skill-understanding {
   flex: 2;
-  padding: 10px;
+  padding: 8px;
   background-color: #f9f9f9;
   border-radius: 6px;
 }
@@ -667,10 +767,171 @@ body {
   color: #4a5568;
   line-height: 1.6;
   font-size: 14px;
+  word-break: break-all;
 }
 
 @media (max-width: 768px) {
   .skill-content-container {
     flex-direction: column;
   }
-} 
+}
+
+/* PDF-specific styles */
+@media print {
+  .report-container {
+    width: 210mm;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+  }
+
+  .report-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .skill-card {
+    page-break-inside: avoid;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .skill-content-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .report-header {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
+
+/* Fix for chart container in PDF */
+.chart-container {
+  width: 100%;
+  max-width: 100%;
+  page-break-inside: avoid;
+}
+
+.chart-content {
+  height: 300px;
+  position: relative;
+}
+
+.bars-container {
+  display: flex;
+  justify-content: space-around;
+  height: 100%;
+}
+
+.bar-column {
+  width: 20%;
+  position: relative;
+}
+
+.bar {
+  width: 40px;
+  position: absolute;
+  bottom: 0;
+}
+
+/* Add these specific styles for PDF page breaks */
+@media print {
+  .report-body {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .skill-details-section {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  .report-container {
+    width: 216mm;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+  }
+}
+
+/* Reduce spacing in PDF compact mode */
+.pdf-compact-mode .report-body {
+  padding: 5px 2px;
+  gap: 5px;
+}
+
+.pdf-compact-mode .skill-card {
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.pdf-compact-mode .skill-content-container {
+  gap: 5px;
+}
+
+.pdf-compact-mode .overall-score-header {
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.pdf-compact-mode .report-header {
+  padding: 10px 5px;
+}
+
+/* Add these specific styles for PDF compact mode */
+.pdf-compact-mode {
+  font-size: 90%;
+}
+
+.pdf-compact-mode .report-body {
+  padding: 2px;
+  gap: 2px;
+}
+
+.pdf-compact-mode .skill-card {
+  padding: 3px;
+  margin-bottom: 3px;
+}
+
+.pdf-compact-mode .skill-content-container {
+  gap: 3px;
+}
+
+.pdf-compact-mode .overall-score-header {
+  padding: 3px;
+  margin-bottom: 3px;
+}
+
+.pdf-compact-mode .report-header {
+  padding: 3px;
+}
+
+.pdf-compact-mode .logo-section {
+  margin-bottom: 0;
+}
+
+.pdf-compact-mode .logo-brand {
+  font-size: 36px;
+}
+
+.pdf-compact-mode .skill-details-title {
+  margin-bottom: 3px;
+  margin-top: 3px;
+}
+
+.pdf-compact-mode .chart-content {
+  height: 160px;
+}
+
+.pdf-compact-mode .chart-area {
+  height: 130px;
+}
+
+.pdf-compact-mode .x-axis-title {
+  margin-top: 10px;
+}

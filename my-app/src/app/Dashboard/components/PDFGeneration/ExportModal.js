@@ -1,86 +1,122 @@
-'use client'
+"use client"
 
-import { useRef } from 'react'
-import { jsPDF } from 'jspdf'
-import html2canvas from 'html2canvas'
-import ScoreReport from './ScoreReport'
-import './PDFGeneration.css'
+import { useRef, useState } from "react"
+import { jsPDF } from "jspdf"
+import html2canvas from "html2canvas"
+import ScoreReport from "./ScoreReport"
+import "./PDFGeneration.css"
 
 export default function ExportModal({ isOpen, onClose, testData }) {
   const modalRef = useRef(null)
   const contentRef = useRef(null)
+  const [generating, setGenerating] = useState(false)
 
   if (!isOpen) return null
 
   const handleDownload = async () => {
-    const loadingElement = document.createElement('div')
-    loadingElement.className = 'pdf-loading'
-    loadingElement.innerText = 'Generating PDF...'
+    setGenerating(true)
+
+    const loadingElement = document.createElement("div")
+    loadingElement.className = "pdf-loading"
+    loadingElement.innerText = "Generating PDF..."
     document.body.appendChild(loadingElement)
 
     try {
       const reportContainer = contentRef.current
-      reportContainer.classList.add('pdf-generating')
+
+      // Wait a moment to ensure all content is fully rendered
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      // Add a class to make the content more compact for PDF generation
+      reportContainer.classList.add("pdf-compact-mode")
+
+      // Make sure the container is visible during capture
+      const originalStyle = reportContainer.style.cssText
+      reportContainer.style.position = "fixed"
+      reportContainer.style.top = "0"
+      reportContainer.style.left = "0"
+      reportContainer.style.width = "216mm" // Increased from 210mm to use more space
+      reportContainer.style.height = "auto"
+      reportContainer.style.backgroundColor = "#ffffff"
+      reportContainer.style.zIndex = "-9999" // Hide from view but keep rendered
+      reportContainer.style.transform = "none"
+      reportContainer.style.opacity = "1"
+      reportContainer.style.visibility = "visible"
+      reportContainer.style.overflow = "visible"
 
       const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
         compress: true,
-        margins: {
-          top: 5,
-          bottom: 5,
-          left: 5,
-          right: 5
-        }
       })
 
       const pdfWidth = pdf.internal.pageSize.getWidth()
       const pdfHeight = pdf.internal.pageSize.getHeight()
+      const margin = 2 // Reduced from 5mm to 2mm
 
-      // 📸 Capture the actual on-screen report
+      // Capture the entire report as a single canvas
       const canvas = await html2canvas(reportContainer, {
-        scale: 2,
+        scale: 2, // Higher scale for better quality
         useCORS: true,
         allowTaint: true,
-        backgroundColor: '#ffffff'
+        backgroundColor: "#ffffff",
+        logging: false,
+        windowWidth: 794, // A4 width in pixels (approximately)
+        onclone: (clonedDoc) => {
+          // Force all elements to be visible in the clone
+          const elements = clonedDoc.querySelectorAll("*")
+          elements.forEach((el) => {
+            const style = window.getComputedStyle(el)
+            if (style.display === "none" || style.visibility === "hidden") {
+              el.style.display = "block"
+              el.style.visibility = "visible"
+            }
+          })
+
+          // Apply compact mode to the clone
+          clonedDoc.querySelector(".report-container").classList.add("pdf-compact-mode")
+        },
       })
 
-      const imgData = canvas.toDataURL('image/png')
+      const imgData = canvas.toDataURL("image/png", 1.0) // Full quality
 
-      const margin = 5 // Reduced margin value
-      const availableWidth = pdfWidth - 2 * margin
-      const availableHeight = pdfHeight - 2 * margin
+      // Calculate dimensions to fit on a single page
+      const imgWidth = pdfWidth - 2 * margin
+      const imgHeight = (canvas.height * imgWidth) / canvas.width
 
-      // Calculate aspect ratio to maintain proportions
-      const ratio = Math.min(availableWidth / canvas.width, availableHeight / canvas.height)
-      const imgWidth = canvas.width * ratio
-      const imgHeight = canvas.height * ratio
+      // Scale to fit on a single page
+      let finalImgWidth = imgWidth
+      let finalImgHeight = imgHeight
 
-      // Center the image with minimal margins
-      const x = margin
-      const y = margin
+      if (imgHeight > pdfHeight - 2 * margin) {
+        // Scale down to fit on one page
+        const scaleFactor = (pdfHeight - 2 * margin) / imgHeight
+        finalImgWidth = imgWidth * scaleFactor
+        finalImgHeight = imgHeight * scaleFactor
 
-      // Use the full available width
-      pdf.addImage(imgData, 'PNG', x, y, availableWidth, imgHeight * (availableWidth / imgWidth), '', 'FAST')
+        // Center horizontally
+        const horizontalMargin = (pdfWidth - finalImgWidth) / 2
 
-      pdf.setProperties({
-        title: `Test Report - ${testData.candidateName || 'Candidate'}`,
-        subject: 'Score Report',
-        creator: 'Test System',
-        author: 'Test Authority'
-      })
+        pdf.addImage(imgData, "PNG", horizontalMargin, margin, finalImgWidth, finalImgHeight)
+      } else {
+        // Content already fits on one page
+        pdf.addImage(imgData, "PNG", margin, margin, finalImgWidth, finalImgHeight)
+      }
 
-      const fileName = `TestReport_${testData.candidateName || 'Report'}_${
-        new Date().toISOString().split('T')[0]
-      }.pdf`
+      // Remove the compact mode class
+      reportContainer.classList.remove("pdf-compact-mode")
 
+      // Restore original styling
+      reportContainer.style.cssText = originalStyle
+
+      const fileName = `TestReport_${testData.candidateName || "Report"}_${new Date().toISOString().split("T")[0]}.pdf`
       pdf.save(fileName)
     } catch (error) {
-      console.error('Error generating PDF:', error)
-      alert('Error generating PDF. Please try again.')
+      console.error("Error generating PDF:", error)
+      alert("Error generating PDF. Please try again.")
     } finally {
-      contentRef.current?.classList.remove('pdf-generating')
+      setGenerating(false)
       document.body.removeChild(loadingElement)
     }
   }
@@ -101,14 +137,14 @@ export default function ExportModal({ isOpen, onClose, testData }) {
         </div>
 
         <div className="modal-content">
-          <div className="score-report-container" ref={contentRef}>
+          <div className={`score-report-container ${generating ? "pdf-generating" : ""}`} ref={contentRef}>
             <ScoreReport data={testData} />
           </div>
         </div>
 
         <div className="modal-actions">
-          <button className="action-button download-button" onClick={handleDownload}>
-            Download PDF
+          <button className="action-button download-button" onClick={handleDownload} disabled={generating}>
+            {generating ? "Generating..." : "Download PDF"}
           </button>
         </div>
       </div>
