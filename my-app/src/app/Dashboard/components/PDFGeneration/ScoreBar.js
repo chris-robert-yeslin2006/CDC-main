@@ -1,62 +1,179 @@
 "use client"
 
-import { useState,useEffect } from "react"
+import { useState, useEffect } from "react"
 
-function ScoreBar({Vocabulary,Sentence_mastery, Fluency ,Pronouncation }) {
-  const [xAxis, setXAxis] = useState("Category")
-  const [yAxis, setYAxis] = useState("Score")
+function ScoreBar({ Vocabulary, Sentence_mastery, Fluency, Pronouncation }) {
   const [data, setData] = useState([])
+  const [average, setAverage] = useState(0)
 
   // Colors for the bars
-  const colors = ["#f05654", "#f0c354", "#20c997", "#6c5ce7", "#f7a440", "#ff7675", "#74b9ff"]
+  const colors = ["#f05654", "#f0c354", "#20c997", "#6c5ce7"]
 
   useEffect(() => {
     const apiData = [
       { category: "Vocabulary", score: Vocabulary },
-      { category: "Sentence Mastery", score: Sentence_mastery },
+      { category: "Sentence M.", score: Sentence_mastery },
       { category: "Fluency", score: Fluency },
-      { category: "Pronunciation", score: Pronouncation },
+      { category: "Pronun.", score: Pronouncation },
     ]
     setData(apiData)
-  }, [Vocabulary, Sentence_mastery, Fluency, Pronouncation]) 
-  // Generate Y-axis labels from 0 to 90 in increments of 10
-  const yAxisLabels = Array.from({ length: 10 }, (_, i) => 90 - i * 10)
+    
+    // Calculate average score
+    const sum = apiData.reduce((total, item) => total + item.score, 0)
+    const avg = sum / apiData.length
+    setAverage(Math.round(avg * 10) / 10) // Round to 1 decimal place
+  }, [Vocabulary, Sentence_mastery, Fluency, Pronouncation])
 
+  // Generate Y-axis labels from 0 to 90 in increments of 30
+  const yAxisLabels = [100, 75, 50, 25, 0]
 
   return (
-    <div className="chart-container">
-      <div className="chart-content">
-        <div className="chart-area">
+    <div className="chart-container" style={{ width: "100%", maxWidth: "100%" }}>
+      <div className="chart-content" style={{ height: "180px", position: "relative" }}>
+        <div className="chart-area" style={{ display: "flex", height: "150px" }}>
           {/* Y-axis labels */}
-          <div className="y-axis">
+          <div
+            className="y-axis"
+            style={{ 
+              display: "flex",
+                  flexDirection: "column",
+                  paddingRight: '5px',
+                  height: '170%',
+                  justifyContent: 'space-evenly',
+                  top: '-60px',
+                  position: 'relative',
+            }}
+          >
             {yAxisLabels.map((value) => (
-              <div key={value} className="y-label">
+              <div 
+                key={value} 
+                className="y-label" 
+                style={{ 
+                  fontSize: "10px", 
+                  color: "#718096",
+                  height: "0",
+                  display: "flex",
+                  alignItems: "center",
+                  transform: "translateY(-50%)"
+                }}
+              >
                 {value}
               </div>
             ))}
           </div>
 
           {/* Chart grid and bars */}
-          <div className="chart-grid">
+          <div className="chart-grid" style={{ flex: "1", position: "relative", height: "100%" }}>
             {/* Horizontal grid lines */}
             {yAxisLabels.map((value) => (
-              <div key={value} className="grid-line" style={{ bottom: `${(value / 90) * 100}%` }} />
+              <div
+                key={value}
+                className="grid-line"
+                style={{
+                  position: "absolute",
+                  left: "0",
+                  right: "0",
+                  bottom: `${(value / 90) * 100}%`,
+                  borderTop: "1px solid #d1d5db",
+                }}
+              />
             ))}
+            
+            {/* Average line */}
+            <div
+              className="average-line"
+              style={{
+                position: "absolute",
+                left: "0",
+                right: "0",
+                bottom: `${(average / 90) * 100}%`,
+                borderTop: "2px solid rgb(255 0 0)",
+                zIndex: 5,
+              }}
+            >
+              <div 
+                className="average-label"
+                style={{
+                  position: "absolute",
+                  right: "5px",
+                  top: "-15px",
+                  backgroundColor: "rgb(255 0 0)",
+                  color: "white",
+                  fontSize: "9px",
+                  padding: "2px 4px",
+                  borderRadius: "3px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Avg: {average}
+              </div>
+            </div>
 
-            {/* Bars */}
-            <div className="bars-container">
+            {/* Bars with improved spacing */}
+            <div
+              className="bars-container"
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                height: "100%",
+                position: "relative",
+                padding: "0 5px",
+              }}
+            >
               {data.map((item, index) => (
-                <div key={item.category} className="bar-column">
+                <div
+                  key={item.category}
+                  className="bar-column"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    width: "20%",
+                    height: "100%",
+                    position: "relative",
+                  }}
+                >
                   <div
                     className="bar"
                     style={{
-                      height: `${(item.score / 110) * 100}%`,
+                      width: "25px",
+                      borderTopLeftRadius: "4px",
+                      borderTopRightRadius: "4px",
+                      position: "absolute",
+                      bottom: "0",
+                      height: `${(item.score / 90) * 100}%`,
                       backgroundColor: colors[index % colors.length],
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "flex-start",
                     }}
                   >
-                    <div className="bar-value">{item.score}</div>
+                    <div
+                      className="bar-value"
+                      style={{
+                        color: "white",
+                        fontWeight: "500",
+                        paddingTop: "2px",
+                        fontSize: "10px",
+                      }}
+                    >
+                      {item.score}
+                    </div>
                   </div>
-                  <div className="x-label">{item.category}</div>
+                  <div
+                    className="x-label"
+                    style={{
+                      position: "absolute",
+                      bottom: "-15px",
+                      fontSize: "9px",
+                      color: "#718096",
+                      textAlign: "center",
+                      width: "100%",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {item.category}
+                  </div>
                 </div>
               ))}
             </div>
@@ -64,7 +181,17 @@ function ScoreBar({Vocabulary,Sentence_mastery, Fluency ,Pronouncation }) {
         </div>
 
         {/* X-axis title */}
-        <div className="x-axis-title">{xAxis}</div>
+        <div
+          className="x-axis-title"
+          style={{
+            textAlign: "center",
+            marginTop: "15px",
+            color: "#4a5568",
+            fontSize: "10px",
+          }}
+        >
+          Category
+        </div>
       </div>
     </div>
   )

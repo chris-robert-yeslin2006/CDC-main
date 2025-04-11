@@ -156,21 +156,21 @@ export default function StudentListPage() {
   // Get overall description based on overall score
   const getOverallDescription = (score) => {
     if (score >= 80) {
-      return 'Candidate handles complex language with ease and speaks fluently with a high degree of accuracy. Can contribute fully to native-paced discussions and produce complex language structures appropriately.'
+      return 'Candidate handles complex language with ease and speaks fluently with a high degree of accuracy. Can contribute fully to native-paced discussions and produce complex language structures appropriately.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
     } else if (score >= 70) {
-      return 'Candidate easily handles a wide variety of discourse and speaking styles, and can contribute to a native-paced discussion. Speech is generally fluent, smooth and clear; candidate controls appropriate language structure for speaking about complex material.'
+      return 'Candidate easily handles a wide variety of discourse and speaking styles, and can contribute to a native-paced discussion. Speech is generally fluent, smooth and clear; candidate controls appropriate language structure for speaking about complex material.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
     } else if (score >= 60) {
-      return 'Candidate can handle most communicative tasks and discourse types. Can contribute to a native-paced discussion. Speech is mostly fluent with some minor hesitations; candidate demonstrates good control of various language structures.'
+      return 'Candidate can handle most communicative tasks and discourse types. Can contribute to a native-paced discussion. Speech is mostly fluent with some minor hesitations; candidate demonstrates good control of various language structures.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
     } else if (score >= 50) {
-      return 'Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing. Can contribute to discussions on a range of topics. Speech is generally clear with some fluency problems.'
+      return 'Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing. Can contribute to discussions on a range of topics. Speech is generally clear with some fluency problems.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
     } else if (score >= 40) {
-      return 'Candidate can handle basic communicative tasks and straightforward discussions on concrete topics. Speech contains pauses and hesitations with limited sentence complexity and vocabulary.'
+      return 'Candidate can handle basic communicative tasks and straightforward discussions on concrete topics. Speech contains pauses and hesitations with limited sentence complexity and vocabulary.Speech is generally clear with some fluency problems.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
     } else if (score >= 30) {
-      return 'Candidate can handle simple communicative tasks on familiar topics. Speech is marked by noticeable pauses, simple structures, and limited vocabulary.'
+      return 'Candidate can handle simple communicative tasks on familiar topics. Speech is marked by noticeable pauses, simple structures, and limited vocabulary.Candidate handles complex language with ease and speaks fluently with a high degree of accuracySpeech is generally clear with some fluency problems.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
     } else if (score >= 20) {
       return 'Candidate can communicate minimally with simple words and phrases. Speech contains frequent pauses and is often difficult to follow.'
     } else {
-      return 'Candidate shows minimal ability to communicate in English. Speech may be unintelligible or consist of isolated words.'
+      return 'Candidate shows minimal ability to communicate in English. Speech may be unintelligible or consist of isolated words.Speech is generally clear with some fluency problems.Candidate handles complex language with ease and speaks fluently with a high degree of accuracy.'
     }
   }
 
@@ -180,31 +180,31 @@ export default function StudentListPage() {
       return {
         score: 5,
         level: 'Excellent',
-        description: "Listeners can understand all of the candidate's speech with ease."
+        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing. Can contribute to discussions on a range of topics. Speech is generally clear with some fluency problems.'"
       }
     } else if (overallScore >= 60) {
       return {
         score: 4,
         level: 'Good',
-        description: "Listeners may require a little effort at times to understand some of the candidate's speech."
+        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing."
       }
     } else if (overallScore >= 40) {
       return {
         score: 3,
         level: 'Fair',
-        description: "Listeners need moderate effort to understand most of the candidate's speech."
+        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing. "
       }
     } else if (overallScore >= 20) {
       return {
         score: 2,
         level: 'Poor',
-        description: "Listeners need considerable effort to understand the candidate's speech."
+        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing."
       }
     } else {
       return {
         score: 1,
         level: 'Unintelligible',
-        description: "The candidate's speech is generally unintelligible."
+        description: "Candidate can handle many communicative tasks and discourse types, though with some repetition and unwieldy or imprecise phrasing."
       }
     }
   }
@@ -215,57 +215,75 @@ export default function StudentListPage() {
       sentenceMastery: {
         low: [
           'Practice constructing simple sentences using subject-verb-object structure.',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
           'Learn and practice basic verb tenses (present, past, future) in simple contexts.'
         ],
         medium: [
           'Practice describing your educational history using the correct tense (e.g., present perfect, past perfect, past continuous, etc.).',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
           'Practice rephrasing passive sentences into active sentences.'
         ],
         high: [
           'Practice using complex conditional sentences in conversation.',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
           'Master the use of reported speech and different reporting verbs.'
         ]
       },
       vocabulary: {
         low: [
           'Build a list of 10 new words each week and practice using them in sentences.',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
           'Label objects in your home with English names and read them aloud daily.'
         ],
         medium: [
           'Verbally summarize the main points of a podcast you listened to, using vocabulary from the podcast.',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
           'Practice telling a well-known story from your culture in English, looking up how to translate any unknown words.'
         ],
         high: [
           'Practice explaining complex concepts using precise terminology.',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
           'Learn idiomatic expressions and incorporate them naturally into your speech.'
         ]
       },
       fluency: {
         low: [
           'Read aloud for 5 minutes daily, focusing on speaking without pausing between words.',
-          'Record yourself speaking about a familiar topic for 1 minute, then try to reduce the number of pauses next time.'
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.'
         ],
         medium: [
-          'Practice speaking for a full two minutes without stopping. If you get stuck on a word, try expressing your idea in a different way.',
-          'Listen to short videos of native speakers of English. Try repeating what they say, imitating the pace and the location of pauses.'
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.'
         ],
         high: [
-          'Join discussion groups where you can practice extended turns of talking.',
-          'Practice summarizing complex information concisely and fluently.'
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.'
         ]
       },
       pronunciation: {
         low: [
-          'Focus on mastering the 44 phonemes (sounds) of English by practicing minimal pairs.',
-          'Record yourself reading a short paragraph and compare your pronunciation to a native speaker.'
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts..'
         ],
         medium: [
           'Look up commonly mispronounced words in English and learn how to say them correctly.',
-          "Listen to a video clip of a native English speaker. Pause the video after each sentence and repeat it exactly, imitating the speaker's rhythm."
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+
+          "Learn and practice basic verb tenses (present, past, future) in simple contexts."
         ],
         high: [
-          'Focus on mastering word stress in multi-syllable words.',
-          'Practice sentence intonation patterns for questions, statements, and emphasis.'
+          'Focus on mastering word stress in multi-syllable past, future) in simple contexts .',
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts.',
+
+          'Learn and practice basic verb tenses (present, past, future) in simple contexts..'
         ]
       }
     }
