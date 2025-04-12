@@ -45,7 +45,15 @@ export default function AnalyticsPage() {
 
   return (
     <div className="analytics-container">
-      <h1 className="page-title">Student Analytics Dashboard</h1>
+      <div className="page-header">
+        <h1 className="page-title">Student Analytics Dashboard</h1>
+        <button 
+          className="student-button"
+          onClick={() => router.push(`/Dashboard/Analytics/List/LanguageList/LanguageDetails/StudentList?orgId=${orgId}&language=${language}`)}
+        >
+          View All Students <span className="button-icon">→</span>
+        </button>
+      </div>
       
       {/* Top boxes */}
       <div className="top-boxes">
@@ -64,57 +72,26 @@ export default function AnalyticsPage() {
             <span className="trend-indicator positive">+3 this week</span>
           </div>
         </div>
-      </div>
-      
-      {/* Leaderboard */}
-      <div className="leaderboard">
-        <div className="leaderboard-header">
-          <h2 className="leaderboard-title">Student Leaderboard</h2>
+
+        <div className="info-box">
+          <h2 className="box-label">Pass Rate</h2>
+          <div className="box-value-container">
+            <span className="box-value">{passPercentage}%</span>
+            <span className="trend-indicator positive">+2.5% ↑</span>
+          </div>
         </div>
-        <div className="table-container">
-          <table className="leaderboard-table">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Name</th>
-                <th>Tests Attended</th>
-                <th>Highest Score</th>
-                <th>Total Score</th>
-                <th>Avg. Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaderboardData
-                .sort((a, b) => b.avgScore - a.avgScore)
-                .map((student, index) => (
-                  <tr key={index} className={index < 3 ? "top-performer" : ""}>
-                    <td>
-                      <div className="rank">#{index + 1}</div>
-                    </td>
-                    <td>
-                      <div className="student-name">{student.name}</div>
-                    </td>
-                    <td>
-                      <div className="data-cell">{student.testsAttended}</div>
-                    </td>
-                    <td>
-                      <div className="data-cell">{student.highestScore}</div>
-                    </td>
-                    <td>
-                      <div className="data-cell">{student.totalScore}</div>
-                    </td>
-                    <td>
-                      <div className="avg-score">{student.avgScore.toFixed(1)}</div>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+        
+        <div className="info-box">
+          <h2 className="box-label">Average Score</h2>
+          <div className="box-value-container">
+            <span className="box-value">{overallAvgScore.toFixed(1)}</span>
+            <span className="trend-indicator positive">+1.2 pts ↑</span>
+          </div>
         </div>
       </div>
       
-      {/* Bottom boxes */}
-      <div className="bottom-boxes">
+      {/* Charts Section */}
+      <div className="charts-section">
         <div className="chart-box">
           <h2 className="chart-title">Pass Percentage</h2>
           <div className="chart-container">
@@ -140,18 +117,71 @@ export default function AnalyticsPage() {
               yLabel="Average Score" 
             />
           </div>
-          <div className="overall-avg">
-            <span className="avg-label">Overall Average: </span>
-            <span className="avg-value">{overallAvgScore.toFixed(1)}</span>
+        </div>
+      </div>
+      
+      {/* Leaderboard */}
+      <div className="leaderboard-section">
+        <div className="leaderboard-header">
+          <h2 className="section-title">Student Leaderboard</h2>
+          <div className="leaderboard-actions">
+            <button 
+              className="secondary-button"
+              onClick={() => router.push(`/Dashboard/Analytics/List/LanguageList/LanguageDetails/StudentList?orgId=${orgId}&language=${language}&sort=topPerformers`)}
+            >
+              View All Rankings
+            </button>
           </div>
         </div>
-        <button 
-          className='student-button'
-          onClick={() => router.push(`/Dashboard/Analytics/List/LanguageList/LanguageDetails/StudentList?orgId=${orgId}&language=${language}`)}
-        >
-          Students List
-        </button>
+        <div className="leaderboard">
+          <div className="table-container">
+            <table className="leaderboard-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Name</th>
+                  <th>Tests Attended</th>
+                  <th>Highest Score</th>
+                  <th>Total Score</th>
+                  <th>Avg. Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {leaderboardData
+                  .sort((a, b) => b.avgScore - a.avgScore)
+                  .map((student, index) => (
+                    <tr key={index} className={index < 3 ? "top-performer" : ""}>
+                      <td>
+                        <div className={`rank ${index < 3 ? "top-rank" : ""}`}>
+                          {index < 3 ? 
+                            <span className="rank-medal">🏆</span> : 
+                            <span>#{index + 1}</span>
+                          }
+                        </div>
+                      </td>
+                      <td>
+                        <div className="student-name">{student.name}</div>
+                      </td>
+                      <td>
+                        <div className="data-cell">{student.testsAttended}</div>
+                      </td>
+                      <td>
+                        <div className="data-cell">{student.highestScore}</div>
+                      </td>
+                      <td>
+                        <div className="data-cell">{student.totalScore}</div>
+                      </td>
+                      <td>
+                        <div className="avg-score">{student.avgScore.toFixed(1)}</div>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+      
       <style jsx>{`
         /* Base styles */
         .analytics-container {
@@ -161,39 +191,97 @@ export default function AnalyticsPage() {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
-        .page-title {
-          font-size: 24px;
-          font-weight: 700;
+        .page-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           margin-bottom: 24px;
+        }
+
+        .page-title {
+          font-size: 28px;
+          font-weight: 700;
           color: #1f2937;
+          margin: 0;
+        }
+
+        /* Button styles */
+        .student-button {
+          background-color: #2563eb;
+          color: white;
+          font-weight: 600;
+          padding: 10px 16px;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          transition: background-color 0.2s;
+        }
+
+        .student-button:hover {
+          background-color: #1d4ed8;
+        }
+
+        .button-icon {
+          margin-left: 6px;
+        }
+
+        .secondary-button {
+          background-color: white;
+          color: #2563eb;
+          border: 1px solid #e5e7eb;
+          border-radius: 6px;
+          padding: 8px 12px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .secondary-button:hover {
+          border-color: #2563eb;
+          background-color: #f0f5ff;
         }
 
         /* Top boxes styles */
         .top-boxes {
           display: grid;
-          grid-template-columns: 1fr;
-          gap: 24px;
+          grid-template-columns: repeat(1, 1fr);
+          gap: 20px;
           margin-bottom: 32px;
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 640px) {
           .top-boxes {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .top-boxes {
+            grid-template-columns: repeat(4, 1fr);
           }
         }
 
         .info-box {
           background-color: white;
-          border-radius: 8px;
-          padding: 24px;
+          border-radius: 12px;
+          padding: 20px;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .info-box:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .box-label {
           font-size: 14px;
           font-weight: 500;
           color: #6b7280;
-          margin-bottom: 4px;
+          margin-bottom: 6px;
         }
 
         .box-value-container {
@@ -202,14 +290,15 @@ export default function AnalyticsPage() {
         }
 
         .box-value {
-          font-size: 30px;
+          font-size: 32px;
           font-weight: 700;
           color: #1f2937;
         }
 
         .trend-indicator {
           font-size: 14px;
-          margin-left: 8px;
+          margin-left: 10px;
+          font-weight: 500;
         }
 
         .trend-indicator.positive {
@@ -220,101 +309,23 @@ export default function AnalyticsPage() {
           color: #ef4444;
         }
 
-        /* Leaderboard styles */
-        .leaderboard {
-          background-color: white;
-          border-radius: 8px;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-          margin-bottom: 32px;
-        }
-
-        .leaderboard-header {
-          padding: 16px;
-          border-bottom: 1px solid #e5e7eb;
-        }
-
-        .leaderboard-title {
-          font-size: 18px;
-          font-weight: 600;
-          color: #1f2937;
-        }
-
-        .table-container {
-          overflow-x: auto;
-        }
-
-        .leaderboard-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-
-        .leaderboard-table th {
-          padding: 12px 24px;
-          text-align: left;
-          font-size: 12px;
-          font-weight: 500;
-          color: #6b7280;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          background-color: #f9fafb;
-        }
-
-        .leaderboard-table td {
-          padding: 16px 24px;
-          white-space: nowrap;
-        }
-
-        .leaderboard-table tr {
-          border-bottom: 1px solid #e5e7eb;
-        }
-
-        .leaderboard-table tbody tr:last-child {
-          border-bottom: none;
-        }
-
-        .top-performer {
-          background-color: #fefce8;
-        }
-
-        .rank {
-          font-size: 14px;
-          font-weight: 500;
-          color: #1f2937;
-        }
-
-        .student-name {
-          font-size: 14px;
-          font-weight: 500;
-          color: #1f2937;
-        }
-
-        .data-cell {
-          font-size: 14px;
-          color: #1f2937;
-        }
-
-        .avg-score {
-          font-size: 14px;
-          font-weight: 500;
-          color: #1f2937;
-        }
-
-        /* Bottom boxes styles */
-        .bottom-boxes {
+        /* Charts section */
+        .charts-section {
           display: grid;
           grid-template-columns: 1fr;
           gap: 24px;
+          margin-bottom: 32px;
         }
 
-        @media (min-width: 768px) {
-          .bottom-boxes {
+        @media (min-width: 1024px) {
+          .charts-section {
             grid-template-columns: 1fr 1fr;
           }
         }
 
         .chart-box {
           background-color: white;
-          border-radius: 8px;
+          border-radius: 12px;
           padding: 24px;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
@@ -323,36 +334,119 @@ export default function AnalyticsPage() {
           font-size: 18px;
           font-weight: 600;
           color: #1f2937;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
         }
 
         .chart-container {
           display: flex;
           justify-content: center;
+          align-items: center;
+          height: 320px;
         }
 
-        .overall-avg {
-          text-align: center;
-          margin-top: 16px;
+        /* Leaderboard styles */
+        .leaderboard-section {
+          background-color: white;
+          border-radius: 12px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .avg-label {
-          font-size: 14px;
+        .leaderboard-header {
+          padding: 20px;
+          border-bottom: 1px solid #e5e7eb;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .section-title {
+          font-size: 20px;
+          font-weight: 600;
+          color: #1f2937;
+          margin: 0;
+        }
+
+        .table-container {
+          overflow-x: auto;
+          padding: 0 8px;
+        }
+
+        .leaderboard-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        .leaderboard-table th {
+          padding: 14px 20px;
+          text-align: left;
+          font-size: 12px;
+          font-weight: 600;
           color: #6b7280;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          background-color: #f9fafb;
+          border-top: 1px solid #e5e7eb;
+          border-bottom: 1px solid #e5e7eb;
         }
 
-        .avg-value {
-          font-weight: 700;
+        .leaderboard-table td {
+          padding: 16px 20px;
+          white-space: nowrap;
+        }
+
+        .leaderboard-table tr {
+          border-bottom: 1px solid #e5e7eb;
+          transition: background-color 0.2s;
+        }
+
+        .leaderboard-table tr:hover {
+          background-color: #f9fafb;
+        }
+
+        .leaderboard-table tbody tr:last-child {
+          border-bottom: none;
+        }
+
+        .top-performer {
+          background-color: #f0f9ff;
+        }
+
+        .top-performer:hover {
+          background-color: #e0f2fe !important;
+        }
+
+        .rank {
+          font-size: 14px;
+          font-weight: 600;
+          color: #4b5563;
+          display: flex;
+          align-items: center;
+        }
+
+        .top-rank {
+          color: #d97706;
+        }
+
+        .rank-medal {
+          font-size: 18px;
+          margin-right: 5px;
+        }
+
+        .student-name {
+          font-size: 15px;
+          font-weight: 500;
           color: #1f2937;
         }
-           .student-button {
-          background-color: #2980b9;
-          font-weight: bold;
-          width: max-content;
-          color: white;
-          padding: 10px;
-          border: transparent 0px solid;
-          border-radius: 10px;
+
+        .data-cell {
+          font-size: 14px;
+          color: #4b5563;
+        }
+
+        .avg-score {
+          font-size: 16px;
+          font-weight: 600;
+          color: #2563eb;
         }
       `}</style>
     </div>
