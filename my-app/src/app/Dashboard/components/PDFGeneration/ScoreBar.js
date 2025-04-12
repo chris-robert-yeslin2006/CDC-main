@@ -27,6 +27,9 @@ function ScoreBar({ Vocabulary, Sentence_mastery, Fluency, Pronouncation }) {
   // Generate Y-axis labels from 0 to 90 in increments of 30
   const yAxisLabels = [100, 75, 50, 25, 0]
 
+  // Define a neater color for the average line
+  const averageLineColor = "#2c3e50" // Darker blue, more professional
+
   return (
     <div className="chart-container" style={{ width: "100%", maxWidth: "100%" }}>
       <div className="chart-content" style={{ height: "180px", position: "relative" }}>
@@ -36,12 +39,12 @@ function ScoreBar({ Vocabulary, Sentence_mastery, Fluency, Pronouncation }) {
             className="y-axis"
             style={{ 
               display: "flex",
-                  flexDirection: "column",
-                  paddingRight: '5px',
-                  height: '170%',
-                  justifyContent: 'space-evenly',
-                  top: '-60px',
-                  position: 'relative',
+              flexDirection: "column",
+              paddingRight: '5px',
+              height: '170%',
+              justifyContent: 'space-evenly',
+              top: '-60px',
+              position: 'relative',
             }}
           >
             {yAxisLabels.map((value) => (
@@ -79,15 +82,15 @@ function ScoreBar({ Vocabulary, Sentence_mastery, Fluency, Pronouncation }) {
               />
             ))}
             
-            {/* Average line */}
+            {/* Average line - Modified to be neater and start from the very left */}
             <div
               className="average-line"
               style={{
                 position: "absolute",
-                left: "0",
+                left: "-5px", // Extended to start before the first bar
                 right: "0",
                 bottom: `${(average / 90) * 100}%`,
-                borderTop: "2px solid rgb(255 0 0)",
+                borderTop: `2px dashed ${averageLineColor}`, // Changed to dashed for better visibility
                 zIndex: 5,
               }}
             >
@@ -97,12 +100,13 @@ function ScoreBar({ Vocabulary, Sentence_mastery, Fluency, Pronouncation }) {
                   position: "absolute",
                   right: "5px",
                   top: "-15px",
-                  backgroundColor: "rgb(255 0 0)",
+                  backgroundColor: averageLineColor,
                   color: "white",
                   fontSize: "9px",
-                  padding: "2px 4px",
+                  padding: "2px 5px",
                   borderRadius: "3px",
                   whiteSpace: "nowrap",
+                  boxShadow: "0 1px 2px rgba(0,0,0,0.2)", // Added subtle shadow for depth
                 }}
               >
                 Avg: {average}
@@ -185,7 +189,6 @@ function ScoreBar({ Vocabulary, Sentence_mastery, Fluency, Pronouncation }) {
           className="x-axis-title"
           style={{
             textAlign: "center",
-            marginTop: "15px",
             color: "#4a5568",
             fontSize: "10px",
           }}

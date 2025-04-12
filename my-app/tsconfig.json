@@ -8,7 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "noEmit": true,
     "incremental": true,
     "module": "esnext",
@@ -21,14 +21,19 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": ["./src/app/*"]
+    }
+    
+    
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/Dashboard/Analytics/layout.jsx", "src/app/Dashboard/Analytics/List/LanguageList/layout.js"  ],
+, "src/app/Dashboard/Analytics/layout.jsx", "src/app/Dashboard/Analytics/List/LanguageList/layout.js", "../tailwind.config.ts"  ],
   "exclude": [
     "node_modules"
   ]

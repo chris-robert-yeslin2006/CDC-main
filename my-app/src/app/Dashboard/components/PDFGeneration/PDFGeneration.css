@@ -37,12 +37,10 @@ body {
 .logo-text {
   font-family: Georgia, Times, serif;
   color: #116793;
-  display: flex
-;
+  display: flex;
   align-items: baseline;
   font-weight: bold;
-  display: flex
-;
+  display: flex;
   gap: 20px;
   justify-content: space-between;
 }
@@ -562,6 +560,9 @@ body {
 
 .score-report-container {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-actions {
@@ -652,10 +653,12 @@ body {
 
 .y-label {
   font-size: 14px;
-  color: #718096;
-  height: 20px;
+  height: 0px;
   display: flex;
   align-items: center;
+  transform: translateY(-50%);
+  font-weight: bold;
+  color: black !important;
 }
 
 .chart-grid {
@@ -711,12 +714,13 @@ body {
   position: absolute;
   bottom: -25px;
   font-size: 14px;
-  color: #718096;
+  color: #000000 !important;
   text-align: center;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: bold;
 }
 
 .x-axis-title {
@@ -752,7 +756,7 @@ body {
 .skill-understanding {
   flex: 2;
   padding: 8px;
-  background-color: #f9f9f9;
+  background-color: #efefefcc !important;
   border-radius: 6px;
 }
 
@@ -815,6 +819,8 @@ body {
   width: 100%;
   max-width: 100%;
   page-break-inside: avoid;
+  position: relative;
+  top: 20px;
 }
 
 .chart-content {
