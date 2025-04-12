@@ -19,11 +19,11 @@ export default function SkillDetails({ name, data }) {
   const getUnderstandingText = () => {
     switch (name) {
       case "Sentence Mastery":
-        return "Sentence Mastery reflects the ability to understand, recall and produce English phrases and clauses in complete sentences. Performance depends on accurate syntactic processing and appropriate usage of words, phrases and clauses in meaningful sentence structures."
+        return "Sentence Mastery reflects the ability to understand, recall and produce English phrases and clauses in complete sentences. Performance depends on accurate syntactic processing and appropriate usage of words, phrases and clauses in meaningful sentence structure."
       case "Vocabulary":
         return "Vocabulary reflects the ability to understand common everyday words spoken in sentence context and to produce such words as needed. Performance depends on familiarity with the form and meaning of everyday words and their use in connected speech."
       case "Fluency":
-        return "Fluency reflects the rhythm, phrasing and timing evident in constructing, reading and repeating sentences."
+        return "Fluency reflects the rhythm, phrasing and timing evident in constructing, reading and repeating sentences.Performance depends on familiarity with the form and meaning of everyday words and their use in connected speech."
       case "Pronunciation":
         return "Pronunciation reflects the ability to produce consonants, vowels and stress in a native-like manner in sentence context. Performance depends on knowledge of the phonological structure of everyday words."
       default:
