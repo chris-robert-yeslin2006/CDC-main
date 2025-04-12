@@ -108,7 +108,7 @@ export default function StudentListPage() {
       Each tip should be specific, actionable, and no more than 15 words long.`
       
       // Make the API call to Gemini
-      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=AIzaSyDbDVrCM0qEnHhy7tbjg5BgTThNiPZyh9I", {
+      const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDbDVrCM0qEnHhy7tbjg5BgTThNiPZyh9I", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,6 +148,60 @@ export default function StudentListPage() {
       return getFallbackTips(skillType, level)
     }
   }
+  // Add this new function to fetch descriptions from Gemini API
+const fetchAIDescriptions = async (score, skillType, studentName) => {
+  try {
+    // Determine the level based on score
+    let level
+    if (score < 40) level = 'low'
+    else if (score < 70) level = 'medium'
+    else level = 'high'
+    
+    // Create a prompt for the Gemini API
+    const prompt = `Generate a detailed, personalized description of ${studentName}'s ${language} ${skillType} skills. 
+    Their current level is ${level} (score: ${score}/100). 
+    The description should be professional, constructive, and about 2-3 sentences long. dont excend 40 words
+    Focus on their current abilities and potential areas for improvement.`
+    
+    // Make the API call to Gemini
+    const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDbDVrCM0qEnHhy7tbjg5BgTThNiPZyh9I", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 200
+        }
+      })
+    })
+    
+    const data = await response.json()
+    console.log(data)
+    
+    // Extract description from the response
+    if (data.candidates && data.candidates[0]?.content?.parts && data.candidates[0].content.parts[0]?.text) {
+      return data.candidates[0].content.parts[0].text.trim()
+    }
+    
+    return getFallbackDescription(skillType, level)
+  } catch (error) {
+    console.error('Error fetching AI description:', error)
+    return getFallbackDescription(skillType, level)
+  }
+}
+
+// Fallback function for descriptions if AI fails
+const getFallbackDescription = (skillType, level) => {
+  // We'll use your existing static descriptions as fallback
+  return getDescription(getCEFRLevel(level === 'low' ? 30 : level === 'medium' ? 60 : 80), skillType)
+}
 
   // Fallback function to use if AI fails
   const getFallbackTips = (skillType, level) => {
@@ -256,7 +310,7 @@ export default function StudentListPage() {
     if (score >= 20) return 'A1'
     return 'Pre-A1'
   }
-
+  
   // Get description based on CEFR level
   const getDescription = (level, skillType) => {
     const descriptions = {
@@ -420,55 +474,66 @@ export default function StudentListPage() {
       const pronunciationScore = Math.round(student.pronunciation) || 0
       
       const cefrOverall = getCEFRLevel(overallScore)
-      const cefrSentenceMastery = getCEFRLevel(sentenceMasteryScore)
-      const cefrVocabulary = getCEFRLevel(vocabScore)
-      const cefrFluency = getCEFRLevel(fluencyScore)
-      const cefrPronunciation = getCEFRLevel(pronunciationScore)
       
-      // Get AI-generated tips for each skill area
-      const [sentenceMasteryTips, vocabularyTips, fluencyTips, pronunciationTips] = await Promise.all([
+      // Get AI-generated tips and descriptions for each skill area
+      const [
+        sentenceMasteryTips, 
+        vocabularyTips, 
+        fluencyTips, 
+        pronunciationTips,
+        sentenceMasteryDesc,
+        vocabularyDesc,
+        fluencyDesc,
+        pronunciationDesc,
+        overallDesc
+      ] = await Promise.all([
         getTips(sentenceMasteryScore, 'sentenceMastery', student.name),
         getTips(vocabScore, 'vocabulary', student.name),
         getTips(fluencyScore, 'fluency', student.name),
-        getTips(pronunciationScore, 'pronunciation', student.name)
+        getTips(pronunciationScore, 'pronunciation', student.name),
+        fetchAIDescriptions(sentenceMasteryScore, 'sentenceMastery', student.name),
+        fetchAIDescriptions(vocabScore, 'vocabulary', student.name),
+        fetchAIDescriptions(fluencyScore, 'fluency', student.name),
+        fetchAIDescriptions(pronunciationScore, 'pronunciation', student.name),
+        fetchAIDescriptions(overallScore, 'overall', student.name)
       ])
       
-      // Update the test data with the student's information and AI tips
+      // Update the test data with the student's information and AI content
       setTestData({
         candidateName: student.name,
-        testDate: new Date().toLocaleDateString(), // Or get actual test date if available
+        testDate: new Date().toLocaleDateString(),
         testId: student.id || 'N/A',
         overallScore: overallScore,
         cefr: cefrOverall,
-        overallDescription: getOverallDescription(overallScore),
+        overallDescription: overallDesc || getOverallDescription(overallScore),
         intelligibility: getIntelligibility(overallScore),
         skills: {
           sentenceMastery: {
             score: sentenceMasteryScore,
-            versantScore: Math.round(sentenceMasteryScore * 0.95), // Example calculation
-            cefr: cefrSentenceMastery,
-            description: getDescription(cefrSentenceMastery, 'sentenceMastery'),
+            versantScore: Math.round(sentenceMasteryScore * 0.95),
+            cefr: getCEFRLevel(sentenceMasteryScore),
+            description: sentenceMasteryDesc,
             tips: sentenceMasteryTips
           },
           vocabulary: {
             score: vocabScore,
-            versantScore: Math.round(vocabScore * 0.95), // Example calculation
-            cefr: cefrVocabulary,
-            description: getDescription(cefrVocabulary, 'vocabulary'),
+            versantScore: Math.round(vocabScore * 0.95),
+            cefr: getCEFRLevel(vocabScore),
+            description: vocabularyDesc,
             tips: vocabularyTips
           },
           fluency: {
             score: fluencyScore,
-            versantScore: Math.round(fluencyScore * 0.95), // Example calculation
-            cefr: cefrFluency,
-            description: getDescription(cefrFluency, 'fluency'),
+            versantScore: Math.round(fluencyScore * 0.95),
+            cefr: getCEFRLevel(fluencyScore),
+            description: fluencyDesc,
             tips: fluencyTips
           },
           pronunciation: {
             score: pronunciationScore,
-            versantScore: Math.round(pronunciationScore * 0.95), // Example calculation
-            cefr: cefrPronunciation,
-            description: getDescription(cefrPronunciation, 'pronunciation'),
+            versantScore: Math.round(pronunciationScore * 0.95),
+            cefr: getCEFRLevel(pronunciationScore),
+            description: pronunciationDesc,
             tips: pronunciationTips
           }
         }
