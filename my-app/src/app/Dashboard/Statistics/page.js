@@ -64,12 +64,6 @@ export default function Dashboard() {
           </div>
         </div>
         
-        <div className="tab-navigation">
-          <button className="tab-button">Overview</button>
-          <button className="tab-button active">Analytics</button>
-          <button className="tab-button">Reports</button>
-          <button className="tab-button">Settings</button>
-        </div>
       </div>
 
       <div className="stats-grid">
@@ -158,17 +152,6 @@ export default function Dashboard() {
         <div className="chart-card">
           <div className="chart-header">
             <h3 className="chart-title">Dynamic Metrics</h3>
-            <div className="chart-controls">
-              <select 
-                className="chart-select"
-                value={chartSettings.chartType}
-                onChange={(e) => handleChartTypeChange(e.target.value)}
-              >
-                <option value="month">Monthly</option>
-                <option value="week">Weekly</option>
-                <option value="day">Daily</option>
-              </select>
-            </div>
           </div>
           
           <div className="chart-options">
@@ -196,13 +179,7 @@ export default function Dashboard() {
                 <option value="Engagement">Engagement</option>
               </select>
             </div>
-            <div className="option-group">
-              <span className="option-label">Chart Type</span>
-              <select className="chart-select">
-                <option value="bar">Bar</option>
-                <option value="line">Line</option>
-              </select>
-            </div>
+
           </div>
           
           <div className="chart-container">

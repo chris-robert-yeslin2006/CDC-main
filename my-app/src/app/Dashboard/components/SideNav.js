@@ -125,8 +125,9 @@ export default function SideNav({ activeSection, onNavChange, userProfile }) {
 
       <style jsx>{`
         .sidebar {
-          background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-          color: #f8fafc;
+          // background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+          background :rgba(50, 60, 80, 0.95) ;
+          color: rgba(255, 255, 255, 0.95);
           padding: 24px 0;
           box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
           height: 100%;
