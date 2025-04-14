@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import '../Admin.css'
+import ProtectedRoute from '../../components/ProtectedRoute'
 
 export default function AdminListPage() {
   const [organizations, setOrganizations] = useState([])
@@ -53,6 +54,7 @@ export default function AdminListPage() {
   )
 
   return (
+    <ProtectedRoute>
     <div className="content-container">
       <div className="admin-header-container">
         <div>
@@ -485,5 +487,6 @@ export default function AdminListPage() {
         }
       `}</style>
     </div>
+    </ProtectedRoute>
   )
 }

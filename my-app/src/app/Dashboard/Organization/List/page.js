@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Search, Trash2, Edit, ChevronDown, X } from 'lucide-react';
+import ProtectedRoute from '../../components/ProtectedRoute';
 
 export default function OrganizationList() {
   const [organizations, setOrganizations] = useState([]);
@@ -77,6 +78,7 @@ export default function OrganizationList() {
   );
 
   return (
+    <ProtectedRoute>
     <div className="layout-container">
       <div className="main-content">
         <div className="content-container">
@@ -575,5 +577,6 @@ export default function OrganizationList() {
         }
       `}</style>
     </div>
+    </ProtectedRoute>
   );
 }

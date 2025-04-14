@@ -4,6 +4,8 @@ import Head from 'next/head';
 import SideNav from './components/SideNav';
 import StatisticsSection from './Statistics/page';
 import { useState } from 'react';
+import './components/ProtectedRoute'
+import ProtectedRoute from './components/ProtectedRoute';
 
 export default function Dashboard() {
   const [activeSection, setActiveSection] = useState('statistics');
@@ -33,43 +35,45 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="dashboard-container">
-      <Head>
-        <title>Admin Dashboard | {activeSection.charAt(0).toUpperCase() + activeSection.slice(1)}</title>
-        <meta name="description" content="Admin Dashboard" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <ProtectedRoute>
+      <div className="dashboard-container">
+        <Head>
+          <title>Admin Dashboard | {activeSection.charAt(0).toUpperCase() + activeSection.slice(1)}</title>
+          <meta name="description" content="Admin Dashboard" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      
-      
-      <main className="main-content">
-        {renderSectionContent()}
-      </main>
+        
+        
+        <main className="main-content">
+          {renderSectionContent()}
+        </main>
 
-      <style jsx>{`
-        .dashboard-container {
+        <style jsx>{`
+          .dashboard-container {
+            
+            background-color: #f5f7fa;
+          }
           
-          background-color: #f5f7fa;
-        }
-        
-        .main-content {
-          overflow-y: auto;
-        }
-      `}</style>
+          .main-content {
+            overflow-y: auto;
+          }
+        `}</style>
 
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-            Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-        }
-        
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-    </div>
+        <style jsx global>{`
+          html,
+          body {
+            padding: 0;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+              Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+          }
+          
+          * {
+            box-sizing: border-box;
+          }
+        `}</style>
+      </div>
+    </ProtectedRoute>
   );
 }

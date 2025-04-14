@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import DonutChart from './DonutChart';
 import BarChart from './BarChart';
-import "./StatisticsSection.css"
+import './StatisticsSection.css';
 
 export default function Dashboard() {
   const [statistics, setStatistics] = useState({
@@ -53,50 +53,31 @@ export default function Dashboard() {
       <div className="dashboard-header">
         <div className="header-top">
           <div className="header-title">
-            <h1>Analytics Dashboard</h1>
-            <p className="subtitle">Performance insights across all organizations</p>
+            <h1>Dashboard</h1>
+            <p className="subtitle">Analytics overview for All Organizations</p>
           </div>
           
           <div className="header-actions">
             <div className="date-filter">
-              <span className="date-filter-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-              </span>
-              Last 30 days
-              <span className="date-filter-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </span>
+              Last 30 days ▼
             </div>
-            
-            <button className="export-button">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              Export Data
-            </button>
           </div>
         </div>
         
+        <div className="tab-navigation">
+          <button className="tab-button">Overview</button>
+          <button className="tab-button active">Analytics</button>
+          <button className="tab-button">Reports</button>
+          <button className="tab-button">Settings</button>
+        </div>
       </div>
 
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-header">
             <div className="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width="16" height="16">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
               </svg>
             </div>
             <div className="stat-info">
@@ -113,10 +94,8 @@ export default function Dashboard() {
         <div className="stat-card">
           <div className="stat-header">
             <div className="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <rect x="7" y="7" width="3" height="9"></rect>
-                <rect x="14" y="7" width="3" height="5"></rect>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width="16" height="16">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
               </svg>
             </div>
             <div className="stat-info">
@@ -133,9 +112,8 @@ export default function Dashboard() {
         <div className="stat-card">
           <div className="stat-header">
             <div className="stat-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" width="16" height="16">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <div className="stat-info">
@@ -150,31 +128,31 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="charts-grid">
-        {/* Students by Language Chart */}
-        <div className="chart-card">
-          <div className="chart-header">
-            <h3 className="chart-title">Students by Language</h3>
-            <div className="chart-period">Last 30 days</div>
+        <div className="charts-grid">
+          {/* Students by Language Chart */}
+          <div className="chart-card">
+            <div className="chart-header">
+              <h3 className="chart-title">Students by Language</h3>
+              <div className="chart-period">Last 30 days</div>
+            </div>
+            <div className="chart-container">
+              <DonutChart 
+                data={chartSettings.languageData}
+                width={300}
+                height={300}
+                centerLabel="Students"
+                showTooltip={true}
+              />
+            </div>
+            <div className="chart-legend">
+              {chartSettings.languageData.map((item) => (
+                <div key={item.name} className="legend-item">
+                  <div className="legend-color" style={{ backgroundColor: item.color }}></div>
+                  <span className="legend-text">{item.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="chart-container">
-            <DonutChart 
-              data={chartSettings.languageData}
-              width={300}
-              height={300}
-              centerLabel="Students"
-              showTooltip={true}
-            />
-          </div>
-          <div className="chart-legend">
-            {chartSettings.languageData.map((item) => (
-              <div key={item.name} className="legend-item">
-                <div className="legend-color" style={{ backgroundColor: item.color }}></div>
-                <span className="legend-text">{item.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
 
         {/* Dynamic Metrics Chart */}
         <div className="chart-card">
@@ -218,7 +196,13 @@ export default function Dashboard() {
                 <option value="Engagement">Engagement</option>
               </select>
             </div>
-              
+            <div className="option-group">
+              <span className="option-label">Chart Type</span>
+              <select className="chart-select">
+                <option value="bar">Bar</option>
+                <option value="line">Line</option>
+              </select>
+            </div>
           </div>
           
           <div className="chart-container">
@@ -235,7 +219,7 @@ export default function Dashboard() {
         {/* Pass Percentage by Language */}
         <div className="chart-card">
           <div className="chart-header">
-            <h3 className="chart-title">Pass Percentage</h3>
+            <h3 className="chart-title">Pass Percentage by Language</h3>
             <div className="chart-period">All students</div>
           </div>
           <div className="chart-container">

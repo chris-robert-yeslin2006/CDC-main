@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import ProtectedRoute from '../../components/ProtectedRoute';
 // import './analytics.css';
 
 export default function AnalyticsOrgList() {
@@ -28,6 +29,7 @@ export default function AnalyticsOrgList() {
   };
 
   return (
+    <ProtectedRoute>
     <div className="organizations-list-container">
     <div className="header">
       <h1>Analytics</h1>
@@ -71,7 +73,8 @@ export default function AnalyticsOrgList() {
             ))}
           </tbody>
         </table>
-         </div>     
+         </div>    
+         
       <style jsx>{`
         .organizations-list-container {
           padding: 24px;
@@ -257,5 +260,6 @@ export default function AnalyticsOrgList() {
         }
       `}</style>
     </div>
+    </ProtectedRoute>
   );
 }

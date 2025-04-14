@@ -2,6 +2,7 @@
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import '../../Admin.css'
+import ProtectedRoute from '../../../components/ProtectedRoute'
 
 export default function AdminDetailsPage() {
   const [admins, setAdmins] = useState([])
@@ -25,6 +26,7 @@ export default function AdminDetailsPage() {
   }, [orgId])
 
   return (
+    <ProtectedRoute>
     <div className="content-container">
       <h1 className="page-title">Admin Details</h1>
       {orgName && (
@@ -61,5 +63,6 @@ export default function AdminDetailsPage() {
         </div>
       )}
     </div>
+    </ProtectedRoute>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import '../Admin.css';
+import ProtectedRoute from "../../components/ProtectedRoute";
 
 export default function AddAdmin() {
   const [formData, setFormData] = useState({
@@ -74,6 +75,7 @@ export default function AddAdmin() {
   };
 
   return (
+    <ProtectedRoute>
     <div className="layout-container">
       <div className="main-content">
         <div className="content-container">
@@ -199,5 +201,6 @@ export default function AddAdmin() {
         </div>
       </div>
     </div>
+  </ProtectedRoute>
   );
 }

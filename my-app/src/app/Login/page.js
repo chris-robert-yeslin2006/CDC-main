@@ -1,21 +1,27 @@
-'use client'
+'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './login.module.css';
 
-export default function Login() {
+import { toast } from "sonner";
+import LoginBackground from './LoginBackground';
+import './Login.css';
+
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    setIsLoading(true);
+    
     try {
       const response = await fetch('http://localhost:8000/auth/login', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
           email,
@@ -29,62 +35,75 @@ export default function Login() {
   
       const data = await response.json();
       const token = data.access_token;
+      console.log(token);
   
       // Save the token in sessionStorage
       sessionStorage.setItem('accessToken', token);
-  
-      // Redirect to Dashboard
+      
+      toast.success("Login successful!");
+      
+      // Redirect to Dashboard using Next.js router
       router.push('/Dashboard');
     } catch (err) {
-      alert(err.message || 'Login failed');
+      toast.error(err.message || 'Login failed');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.loginSection}>
-        <div className={styles.logoContainer}>
-          <div className={styles.logo}>
-            {/* <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 4L20 20M4 20L20 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            </svg> */}
-            <span>Super Admin Login</span>
-          </div>
+    <div className="login-container">
+      <div className="login-form-container">
+        <div className="login-header">
+          <h2 className="login-title">Super Admin Login</h2>
         </div>
         
-        <div className={styles.loginForm}>
-          <h1>Welcome back Lead</h1>
-          <p>Enter your account details to sign in.</p>
-          
-          <form onSubmit={handleSubmit}>
-            <div className={styles.inputGroup}>
-              <input 
-                type="text" 
-                placeholder="Email or username"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            
-            <div className={styles.inputGroup}>
-              <input 
-                type="password" 
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            
-            <button type="submit" className={styles.signInButton}>Sign in</button>
-          </form>
+        <div className="login-card">
+          <div className="login-card-header">
+            <h3 className="login-card-title">Welcome back Lead</h3>
+            <p className="login-card-description">
+              Enter your account details to sign in.
+            </p>
+          </div>
+          <div className="login-card-content">
+            <form onSubmit={handleSubmit} className="login-form">
+              <div className="login-form-group">
+                <input 
+                  type="email" 
+                  className="login-input"
+                  placeholder="Email or username"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              
+              <div className="login-form-group">
+                <input 
+                  type="password" 
+                  className="login-input"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              
+              <button 
+                type="submit" 
+                className="login-button"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Signing in...' : 'Sign in'}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
       
-      <div className={styles.imageSection}>
-        {/* This is the decorative side image */}
-      </div>
+      <LoginBackground />
     </div>
   );
-}
+};
+
+export default Login;

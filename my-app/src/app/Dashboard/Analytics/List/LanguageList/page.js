@@ -1,6 +1,7 @@
 'use client'
 
 import {  useRouter, useSearchParams } from 'next/navigation'
+import ProtectedRoute from '../../../components/ProtectedRoute';
 
 export default function LanguageListPage() {
   const router = useRouter()
@@ -54,6 +55,7 @@ export default function LanguageListPage() {
   const orgId = searchParams.get('orgId');
 
   return (
+    <ProtectedRoute>
     <div className="language-list-container">
       <header className="header">
         <h1>Languages List</h1>
@@ -183,5 +185,6 @@ export default function LanguageListPage() {
         }
       `}</style>
     </div>
+    </ProtectedRoute>
   )
 }

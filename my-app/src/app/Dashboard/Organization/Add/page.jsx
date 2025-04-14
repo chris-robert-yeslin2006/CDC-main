@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown } from 'lucide-react';
 import '../organization.css';
+import ProtectedRoute from "../../components/ProtectedRoute";
 
 export default function AddOrganization() {
   function SidebarItemDropdown({ text, children, active }) {
     const [isOpen, setIsOpen] = useState(active);
     return (
+      <ProtectedRoute>
       <div className="sidebar-dropdown">
         <button
           className={`sidebar-dropdown-toggle ${active ? 'active' : ''}`}
@@ -19,6 +21,7 @@ export default function AddOrganization() {
         </button>
         {isOpen && <div className="sidebar-dropdown-content">{children}</div>}
       </div>
+      </ProtectedRoute>
     );
   }
 
@@ -106,6 +109,7 @@ export default function AddOrganization() {
   };
 
   return (
+    <ProtectedRoute>
     <div className="layout-container">
       <div className="main-content">
         <div className="content-container">
@@ -246,5 +250,6 @@ export default function AddOrganization() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }
