@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
 import BarChart from '../../../../Statistics/BarChart'
 import DonutChart from '../../../../Statistics/DonutChart'
+import ProtectedRoute from '../../../../components/ProtectedRoute';
 
 export default function AnalyticsPage() {
   const router = useRouter()
@@ -44,6 +45,7 @@ export default function AnalyticsPage() {
   ]
 
   return (
+    <ProtectedRoute>
     <div className="analytics-container">
       <div className="page-header">
         <h1 className="page-title">Student Analytics Dashboard</h1>
@@ -450,5 +452,6 @@ export default function AnalyticsPage() {
         }
       `}</style>
     </div>
+    </ProtectedRoute>
   );
 }

@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ExportModal from "../../../../../components/PDFGeneration/ExportModal"
+import ProtectedRoute from '../../../../../components/ProtectedRoute'
 
 export default function StudentListPage() {
   const router = useRouter()
@@ -550,6 +551,7 @@ const getFallbackDescription = (skillType, level) => {
   }
 
   return (
+    <ProtectedRoute>
     <div className="student-list-container">
     <style jsx>{`
       .student-list-container {
@@ -842,5 +844,7 @@ const getFallbackDescription = (skillType, level) => {
         </div>
       )}
     </div>
+    </ProtectedRoute>
+
   )
 }
