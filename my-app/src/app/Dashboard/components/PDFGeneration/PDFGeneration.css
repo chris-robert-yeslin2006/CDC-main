@@ -620,7 +620,9 @@ body {
   background: white;
 }
 .chart-container {
+  display: block !important;
   border-radius: 8px;
+ overflow: hidden !important;
   margin-left: 10px;
 }
 
