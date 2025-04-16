@@ -1,0 +1,264 @@
+/* Admin.module.css */
+
+/* Main Layout */
+.layoutContainer {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .mainContent {
+    flex: 1;
+    background-color: #f5f7fa;
+  }
+  
+  .contentContainer {
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Admin Header */
+  .adminHeader {
+    margin-bottom: 32px;
+  }
+  
+  .pageTitle {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+  }
+  
+  .pageDescription {
+    color: #64748b;
+    font-size: 16px;
+  }
+  
+  /* Empty State */
+  .emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 24px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+  
+  .emptyIcon {
+    color: #64748b;
+    margin-bottom: 16px;
+  }
+  
+  .emptyState h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #334155;
+  }
+  
+  .emptyState p {
+    color: #64748b;
+  }
+  
+  /* Table Container */
+  .tableContainer {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  .dataTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .dataTable th,
+  .dataTable td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .dataTable th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #334155;
+    font-size: 14px;
+  }
+  
+  .dataTable tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .actionsCell {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .actionButton {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+  }
+  
+  .editButton {
+    background-color: #4f46e5;
+    color: white;
+  }
+  
+  .editButton:hover {
+    background-color: #4338ca;
+  }
+  
+  .deleteButton {
+    background-color: #ef4444;
+    color: white;
+  }
+  
+  .deleteButton:hover {
+    background-color: #dc2626;
+  }
+  
+  /* Modal */
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modalContainer {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+  }
+  
+  .modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .modalHeader h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+  }
+  
+  .modalClose {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #64748b;
+  }
+  
+  .modalForm {
+    padding: 24px;
+  }
+  
+  .formGroup {
+    margin-bottom: 20px;
+  }
+  
+  .formGroup label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #334155;
+    font-size: 14px;
+  }
+  
+  .formGroup input,
+  .formGroup select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #1e293b;
+    background-color: #fff;
+  }
+  
+  .formGroup input:focus,
+  .formGroup select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  }
+  
+  .formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .cancelButton {
+    padding: 10px 16px;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .cancelButton:hover {
+    background-color: #f8fafc;
+  }
+  
+  .saveButton {
+    padding: 10px 16px;
+    background-color: #4f46e5;
+    color: white;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .saveButton:hover {
+    background-color: #4338ca;
+  }
+  
+  /* Alert Messages */
+  .alert {
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+  }
+  
+  .alertSuccess {
+    background-color: #d1fae5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+  }
+  
+  .alertError {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+  }

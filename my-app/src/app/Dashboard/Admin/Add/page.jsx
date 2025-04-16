@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import '../Admin.css';
@@ -11,6 +11,8 @@ export default function AddAdmin() {
     role: '',
     contact: '',
     language: '',
+    email: '',
+    password: ''
   });
 
   const [orgs, setOrgs] = useState([]);
@@ -18,7 +20,6 @@ export default function AddAdmin() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   useEffect(() => {
-    // Fetch all organization names
     fetch('http://localhost:8000/organization/list')
       .then(res => res.json())
       .then(data => {
@@ -64,6 +65,8 @@ export default function AddAdmin() {
         role: '',
         contact: '',
         language: '',
+        email: '',
+        password: ''
       });
 
     } catch (error) {
@@ -76,7 +79,7 @@ export default function AddAdmin() {
 
   return (
     <ProtectedRoute>
-    <div className="layout-container">
+      <div className="layout-container">
       <div className="main-content">
         <div className="content-container">
           <div className="admin-header">
@@ -114,7 +117,7 @@ export default function AddAdmin() {
                   <label className="form-label">Organization</label>
                   <div className="select-wrapper">
                     <select
-                      name="org_name v"
+                      name="org_name"
                       value={formData.org_name}
                       onChange={handleChange}
                       className="form-input form-select"
@@ -127,7 +130,7 @@ export default function AddAdmin() {
                         </option>
                       ))}
                     </select>
-                    </div>
+                  </div>
                 </div>
 
                 <div className="form-field">
@@ -147,11 +150,23 @@ export default function AddAdmin() {
                   <label className="form-label">Contact Information</label>
                   <input
                     type="text"
-                    name="contact "
+                    name="contact"
                     value={formData.contact}
                     onChange={handleChange}
                     className="form-input"
                     placeholder="Email or phone number"
+                    required
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="form-input"
+                    placeholder="Enter email address"
                     required
                   />
                 </div>
@@ -160,13 +175,13 @@ export default function AddAdmin() {
                   <label className="form-label">Preferred Language</label>
                   <div className="select-wrapper">
                     <select
-                      name="language  V"
+                      name="language"
                       value={formData.language}
                       onChange={handleChange}
                       className="form-input form-select"
                       required
                     >
-                      <option value="">Select Language </option>
+                      <option value="">Select Language</option>
                       <option value="English">English</option>
                       <option value="Japanese">Japanese</option>
                       <option value="Mandarin">Mandarin</option>
@@ -175,6 +190,21 @@ export default function AddAdmin() {
                       <option value="French">French</option>
                     </select>
                   </div>
+                </div>
+
+                
+
+                <div className="form-field">
+                  <label className="form-label">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="form-input"
+                    placeholder="Create password"
+                    required
+                  />
                 </div>
               </div>
 
@@ -200,7 +230,7 @@ export default function AddAdmin() {
           </div>
         </div>
       </div>
-    </div>
-  </ProtectedRoute>
+      </div>
+    </ProtectedRoute>
   );
 }

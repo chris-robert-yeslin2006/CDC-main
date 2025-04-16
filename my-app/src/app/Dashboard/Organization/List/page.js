@@ -161,88 +161,115 @@ export default function OrganizationList() {
                 <X size={20} />
               </button>
             </div>
-            <form onSubmit={handleUpdate} className="modal-form">
-              <div className="form-group">
-                <label htmlFor="name">Organization Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  name="name"
-                  value={editingOrg.name || ''}
-                  onChange={handleChange}
-                  placeholder="Organization Name"
-                  className="form-input"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="head">Head</label>
-                <input
-                  id="head"
-                  type="text"
-                  name="head"
-                  value={editingOrg.head || ''}
-                  onChange={handleChange}
-                  placeholder="Head"
-                  className="form-input"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="ambassador_name">Ambassador Name</label>
-                <input
-                  id="ambassador_name"
-                  type="text"
-                  name="ambassador_name"
-                  value={editingOrg.ambassador_name || ''}
-                  onChange={handleChange}
-                  placeholder="Ambassador Name"
-                  className="form-input"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="ambassador_contact">Ambassador Contact</label>
-                <input
-                  id="ambassador_contact"
-                  type="text"
-                  name="ambassador_contact"
-                  value={editingOrg.ambassador_contact || ''}
-                  onChange={handleChange}
-                  placeholder="Ambassador Contact"
-                  className="form-input"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="contact">Contact</label>
-                <input
-                  id="contact"
-                  type="text"
-                  name="contact"
-                  value={editingOrg.contact || ''}
-                  onChange={handleChange}
-                  placeholder="Contact"
-                  className="form-input"
-                />
-              </div>
-              
-              <div className="form-actions">
-                <button
-                  type="button"
-                  onClick={() => setEditingOrg(null)}
-                  className="cancel-button"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="save-button"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
+            
+<form onSubmit={handleUpdate} className="modal-form">
+  <div className="form-group">
+    <label htmlFor="name">Organization Name</label>
+    <input
+      id="name"
+      type="text"
+      name="name"
+      value={editingOrg.name || ''}
+      onChange={handleChange}
+      placeholder="Organization Name"
+      className="form-input"
+    />
+  </div>
+  
+  <div className="form-group">
+    <label htmlFor="head">Head</label>
+    <input
+      id="head"
+      type="text"
+      name="head"
+      value={editingOrg.head || ''}
+      onChange={handleChange}
+      placeholder="Head"
+      className="form-input"
+    />
+  </div>
+  
+  <div className="form-group">
+    <label htmlFor="ambassador_name">Ambassador Name</label>
+    <input
+      id="ambassador_name"
+      type="text"
+      name="ambassador_name"
+      value={editingOrg.ambassador_name || ''}
+      onChange={handleChange}
+      placeholder="Ambassador Name"
+      className="form-input"
+    />
+  </div>
+  
+  <div className="form-group">
+    <label htmlFor="ambassador_contact">Ambassador Contact</label>
+    <input
+      id="ambassador_contact"
+      type="text"
+      name="ambassador_contact"
+      value={editingOrg.ambassador_contact || ''}
+      onChange={handleChange}
+      placeholder="Ambassador Contact"
+      className="form-input"
+    />
+  </div>
+  
+  <div className="form-group">
+    <label htmlFor="contact">Contact</label>
+    <input
+      id="contact"
+      type="text"
+      name="contact"
+      value={editingOrg.contact || ''}
+      onChange={handleChange}
+      placeholder="Contact"
+      className="form-input"
+    />
+  </div>
+  
+  <div className="form-group">
+    <label htmlFor="email">Email</label>
+    <input
+      id="email"
+      type="email"
+      name="email"
+      value={editingOrg.email || ''}
+      onChange={handleChange}
+      placeholder="Email"
+      className="form-input"
+    />
+  </div>
+  
+  <div className="form-group">
+    <label htmlFor="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      name="password"
+      value={editingOrg.password || ''}
+      onChange={handleChange}
+      placeholder="Password"
+      className="form-input"
+    />
+  </div>
+  
+  <div className="form-actions">
+    <button
+      type="button"
+      onClick={() => setEditingOrg(null)}
+      className="cancel-button"
+    >
+      Cancel
+    </button>
+    <button
+      type="submit"
+      className="save-button"
+    >
+      Save Changes
+    </button>
+  </div>
+</form>
           </div>
         </div>
       )}

@@ -1,60 +1,219 @@
 'use client';
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation';
 import BarChart from '../../../../Statistics/BarChart'
 import DonutChart from '../../../../Statistics/DonutChart'
 import ProtectedRoute from '../../../../components/ProtectedRoute';
+
+// Mock data constants
+const MOCK_STUDENTS = [
+  { id: '1', name: "Alex Johnson", org_id: '123', email: "alex@example.com", language: "English", overall_mark: 82.8, average_mark: 82.8, recent_test_mark: 85, fluency_mark: 80, vocab_mark: 84, sentence_mastery: 83, pronunciation: 82 },
+  { id: '2', name: "Samantha Lee", org_id: '123', email: "samantha@example.com", language: "English", overall_mark: 90.0, average_mark: 90.0, recent_test_mark: 92, fluency_mark: 89, vocab_mark: 91, sentence_mastery: 90, pronunciation: 88 },
+  { id: '3', name: "Michael Chen", org_id: '123', email: "michael@example.com", language: "English", overall_mark: 85.0, average_mark: 85.0, recent_test_mark: 83, fluency_mark: 86, vocab_mark: 85, sentence_mastery: 84, pronunciation: 87 },
+  { id: '4', name: "Taylor Moore", org_id: '123', email: "taylor@example.com", language: "English", overall_mark: 85.0, average_mark: 85.0, recent_test_mark: 86, fluency_mark: 84, vocab_mark: 86, sentence_mastery: 85, pronunciation: 84 },
+  { id: '5', name: "Jordan Smith", org_id: '123', email: "jordan@example.com", language: "English", overall_mark: 80.0, average_mark: 80.0, recent_test_mark: 82, fluency_mark: 79, vocab_mark: 81, sentence_mastery: 80, pronunciation: 78 },
+  { id: '6', name: "Emma Williams", org_id: '123', email: "emma@example.com", language: "English", overall_mark: 91.0, average_mark: 91.0, recent_test_mark: 89, fluency_mark: 92, vocab_mark: 90, sentence_mastery: 91, pronunciation: 93 },
+  { id: '7', name: "Noah Brown", org_id: '123', email: "noah@example.com", language: "English", overall_mark: 84.0, average_mark: 84.0, recent_test_mark: 85, fluency_mark: 83, vocab_mark: 84, sentence_mastery: 85, pronunciation: 83 },
+  { id: '8', name: "Olivia Davis", org_id: '123', email: "olivia@example.com", language: "English", overall_mark: 88.0, average_mark: 88.0, recent_test_mark: 87, fluency_mark: 89, vocab_mark: 88, sentence_mastery: 87, pronunciation: 89 },
+];
+
+const MOCK_SUMMARY = {
+  avg_overall: 84.5,
+  avg_fluency: 85.2,
+  avg_vocab: 86.1,
+  avg_sentence_mastery: 83.8,
+  avg_pronunciation: 85.5,
+  weekly_improvement: 1.2
+};
+
+const MOCK_LANGUAGE_DETAILS = {
+  language_name: "English",
+  total_students: 1480,
+  active_students: 1245,
+  tests_conducted: 58,
+  pass_rate: 78
+};
 
 export default function AnalyticsPage() {
   const router = useRouter()
   const searchParams = useSearchParams();
   const orgId = searchParams.get('orgId');
   const language = searchParams.get('language');
-  // Sample data - replace with your actual data
-  const studentCount = 1480
-  const testCount = 58
   
-  const leaderboardData = [
-    { name: "Alex Johnson", testsAttended: 47, highestScore: 98, totalScore: 3890, avgScore: 82.8 },
-    { name: "Samantha Lee", testsAttended: 52, highestScore: 100, totalScore: 4680, avgScore: 90.0 },
-    { name: "Michael Chen", testsAttended: 49, highestScore: 95, totalScore: 4165, avgScore: 85.0 },
-    { name: "Taylor Moore", testsAttended: 51, highestScore: 97, totalScore: 4335, avgScore: 85.0 },
-    { name: "Jordan Smith", testsAttended: 43, highestScore: 96, totalScore: 3440, avgScore: 80.0 },
-    { name: "Emma Williams", testsAttended: 48, highestScore: 99, totalScore: 4368, avgScore: 91.0 },
-    { name: "Noah Brown", testsAttended: 50, highestScore: 94, totalScore: 4200, avgScore: 84.0 },
-    { name: "Olivia Davis", testsAttended: 46, highestScore: 98, totalScore: 4048, avgScore: 88.0 },
-  ]
+  // State for storing data
+  const [loading, setLoading] = useState(true);
+  const [studentData, setStudentData] = useState([]);
+  const [summaryData, setSummaryData] = useState({});
+  const [languageDetails, setLanguageDetails] = useState({});
+  const [useMockData, setUseMockData] = useState(true); // Default to mock data for testing
   
-  const passPercentage = 78 // Sample pass percentage
-  const overallAvgScore = 84.5 // Sample overall average score
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!orgId || !language) {
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        setLoading(true);
+        
+        if (useMockData) {
+          // Use mock data for development
+          setStudentData(MOCK_STUDENTS);
+          setSummaryData(MOCK_SUMMARY);
+          setLanguageDetails(MOCK_LANGUAGE_DETAILS);
+        } else {
+          // Try fetching from real API
+          try {
+            const API_BASE_URL = 'http://localhost:8000'; // Or your actual FastAPI URL
+            
+            // Fetch students
+            const studentsResponse = await fetch(`${API_BASE_URL}/analytics/students?org_id=${orgId}&language=${language}`);
+            const studentsData = await studentsResponse.json();
+            
+            // Fetch summary
+            const summaryResponse = await fetch(`${API_BASE_URL}/analytics/summary?org_id=${orgId}&language=${language}`);
+            const summaryData = await summaryResponse.json();
+            
+            // Fetch language details
+            const detailsResponse = await fetch(`${API_BASE_URL}/analytics/language-detail?org_id=${orgId}&language=${language}`);
+            const detailsData = await detailsResponse.json();
+            
+            setStudentData(studentsData.students || []);
+            setSummaryData(summaryData.summary || {});
+            setLanguageDetails(detailsData || {});
+          } catch (error) {
+            console.error("API fetch error, falling back to mock data:", error);
+            // Fall back to mock data if API fails
+            setStudentData(MOCK_STUDENTS);
+            setSummaryData(MOCK_SUMMARY);
+            setLanguageDetails(MOCK_LANGUAGE_DETAILS);
+          }
+        }
+      } catch (error) {
+        console.error("Error in data fetching:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, [orgId, language, useMockData]);
+
+  // Calculate pass percentage data for the donut chart
+  const calculatePassData = () => {
+    // If we have language details with a pass rate, use that
+    if (languageDetails.pass_rate) {
+      const passRate = languageDetails.pass_rate;
+      const totalStudents = languageDetails.total_students || 1480;
+      const passStudents = Math.round((passRate / 100) * totalStudents);
+      const failStudents = totalStudents - passStudents;
+      
+      return {
+        passData: [
+          { name: "Pass", value: passStudents, color: "#10b981" },
+          { name: "Fail", value: failStudents, color: "#ef4444" }
+        ],
+        passRate
+      };
+    }
+    
+    // Otherwise calculate from student data
+    if (!studentData.length) {
+      return { 
+        passData: [
+          { name: "Pass", value: 1154, color: "#10b981" },
+          { name: "Fail", value: 326, color: "#ef4444" }
+        ], 
+        passRate: 78 
+      };
+    }
+    
+    const passingStudents = studentData.filter(student => 
+      student.overall_mark >= 70
+    ).length;
+    
+    const failingStudents = studentData.length - passingStudents;
+    const passRate = Math.round((passingStudents / studentData.length) * 100);
+    
+    return {
+      passData: [
+        { name: "Pass", value: passingStudents, color: "#10b981" },
+        { name: "Fail", value: failingStudents, color: "#ef4444" }
+      ],
+      passRate
+    };
+  };
   
-  // Donut chart data for pass percentage
-  const passData = [
-    { name: "Pass", value: 1154, color: "#10b981" },
-    { name: "Fail", value: 326, color: "#ef4444" }
-  ]
+  // Process student data for the leaderboard
+  const getLeaderboardData = () => {
+    if (!studentData.length) return [];
+    
+    return studentData
+      .map(student => ({
+        name: student.name,
+        testsAttended: Math.floor(Math.random() * 10) + 40, // Random tests attended for mock data
+        highestScore: student.overall_mark,
+        totalScore: Math.round(student.overall_mark * (Math.random() * 30 + 70)), // Random total score
+        avgScore: student.average_mark || student.overall_mark
+      }))
+      .sort((a, b) => b.avgScore - a.avgScore)
+      .slice(0, 8);
+  };
   
-  // Bar chart data for average scores
-  const avgScoreData = [
-    { day: "Week 1", value: 81.2 },
-    { day: "Week 2", value: 83.5 },
-    { day: "Week 3", value: 85.8 },
-    { day: "Week 4", value: 84.5 },
-    { day: "Week 5", value: 87.2 }
-  ]
+  // Sample data for average scores trend
+  const getAvgScoreData = () => {
+    const baseScore = summaryData.avg_overall || 84.5;
+    return [
+      { day: "Week 1", value: Math.round((baseScore - 3 + Math.random() * 2) * 10) / 10 },
+      { day: "Week 2", value: Math.round((baseScore - 1 + Math.random() * 2) * 10) / 10 },
+      { day: "Week 3", value: Math.round((baseScore + Math.random() * 2) * 10) / 10 },
+      { day: "Week 4", value: Math.round((baseScore + 1 + Math.random() * 2) * 10) / 10 },
+      { day: "Week 5", value: Math.round((baseScore + 2 + Math.random() * 2) * 10) / 10 }
+    ];
+  };
+  
+  const { passData, passRate } = calculatePassData();
+  const leaderboardData = getLeaderboardData();
+  const avgScoreData = getAvgScoreData();
+  
+  const studentCount = languageDetails.total_students || studentData.length || 1480;
+  const overallAvgScore = summaryData.avg_overall || (studentData.length > 0 ? 
+    studentData.reduce((sum, student) => sum + student.overall_mark, 0) / studentData.length : 84.5);
+  const testCount = languageDetails.tests_conducted || 58;
+
+  if (loading) {
+    return (
+      <ProtectedRoute>
+        <div className="analytics-container">
+          <div className="loading">Loading analytics data...</div>
+        </div>
+      </ProtectedRoute>
+    );
+  }
 
   return (
     <ProtectedRoute>
     <div className="analytics-container">
       <div className="page-header">
         <h1 className="page-title">Student Analytics Dashboard</h1>
-        <button 
-          className="student-button"
-          onClick={() => router.push(`/Dashboard/Analytics/List/LanguageList/LanguageDetails/StudentList?orgId=${orgId}&language=${language}`)}
-        >
-          View All Students <span className="button-icon">→</span>
-        </button>
+        <div className="header-actions">
+          <label className="toggle-mock">
+            <input
+              type="checkbox"
+              checked={useMockData}
+              onChange={() => setUseMockData(!useMockData)}
+            />
+            <span>Use Mock Data</span>
+          </label>
+          <button 
+            className="student-button"
+            onClick={() => router.push(`/Dashboard/Analytics/List/LanguageList/LanguageDetails/StudentList?orgId=${orgId}&language=${language}`)}
+          >
+            View All Students <span className="button-icon">→</span>
+          </button>
+        </div>
       </div>
       
       {/* Top boxes */}
@@ -78,7 +237,7 @@ export default function AnalyticsPage() {
         <div className="info-box">
           <h2 className="box-label">Pass Rate</h2>
           <div className="box-value-container">
-            <span className="box-value">{passPercentage}%</span>
+            <span className="box-value">{passRate}%</span>
             <span className="trend-indicator positive">+2.5% ↑</span>
           </div>
         </div>
@@ -102,7 +261,7 @@ export default function AnalyticsPage() {
               width={300} 
               height={300} 
               centerLabel="Pass Rate" 
-              centerValue={`${passPercentage}%`}
+              centerValue={`${passRate}%`}
               showTooltip={true} 
             />
           </div>
@@ -149,35 +308,33 @@ export default function AnalyticsPage() {
                 </tr>
               </thead>
               <tbody>
-                {leaderboardData
-                  .sort((a, b) => b.avgScore - a.avgScore)
-                  .map((student, index) => (
-                    <tr key={index} className={index < 3 ? "top-performer" : ""}>
-                      <td>
-                        <div className={`rank ${index < 3 ? "top-rank" : ""}`}>
-                          {index < 3 ? 
-                            <span className="rank-medal">🏆</span> : 
-                            <span>#{index + 1}</span>
-                          }
-                        </div>
-                      </td>
-                      <td>
-                        <div className="student-name">{student.name}</div>
-                      </td>
-                      <td>
-                        <div className="data-cell">{student.testsAttended}</div>
-                      </td>
-                      <td>
-                        <div className="data-cell">{student.highestScore}</div>
-                      </td>
-                      <td>
-                        <div className="data-cell">{student.totalScore}</div>
-                      </td>
-                      <td>
-                        <div className="avg-score">{student.avgScore.toFixed(1)}</div>
-                      </td>
-                    </tr>
-                  ))}
+                {leaderboardData.map((student, index) => (
+                  <tr key={index} className={index < 3 ? "top-performer" : ""}>
+                    <td>
+                      <div className={`rank ${index < 3 ? "top-rank" : ""}`}>
+                        {index < 3 ? 
+                          <span className="rank-medal">🏆</span> : 
+                          <span>#{index + 1}</span>
+                        }
+                      </div>
+                    </td>
+                    <td>
+                      <div className="student-name">{student.name}</div>
+                    </td>
+                    <td>
+                      <div className="data-cell">{student.testsAttended}</div>
+                    </td>
+                    <td>
+                      <div className="data-cell">{student.highestScore}</div>
+                    </td>
+                    <td>
+                      <div className="data-cell">{student.totalScore}</div>
+                    </td>
+                    <td>
+                      <div className="avg-score">{student.avgScore.toFixed(1)}</div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -205,6 +362,33 @@ export default function AnalyticsPage() {
           font-weight: 700;
           color: #1f2937;
           margin: 0;
+        }
+        
+        .header-actions {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+        
+        .toggle-mock {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          color: #6b7280;
+          cursor: pointer;
+        }
+        
+        .toggle-mock input {
+          margin-right: 6px;
+        }
+        
+        .loading {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 200px;
+          font-size: 18px;
+          color: #6b7280;
         }
 
         /* Button styles */
@@ -344,6 +528,7 @@ export default function AnalyticsPage() {
           justify-content: center;
           align-items: center;
           height: 320px;
+          min-width: 280px;
         }
 
         /* Leaderboard styles */

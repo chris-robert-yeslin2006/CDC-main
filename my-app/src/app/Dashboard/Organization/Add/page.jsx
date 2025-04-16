@@ -52,7 +52,9 @@ export default function AddOrganization() {
     head: '',
     ambassadorName: '',
     ambassadorContact: '',
-    organizationContact: ''
+    organizationContact: '',
+    email: '',
+    password: ''
   });
 
   const [message, setMessage] = useState('');
@@ -75,7 +77,9 @@ export default function AddOrganization() {
       head: formData.head,
       ambassador_name: formData.ambassadorName,
       ambassador_contact: formData.ambassadorContact,
-      contact: formData.organizationContact
+      contact: formData.organizationContact,
+      email: formData.email,
+      password: formData.password
     };
 
     try {
@@ -160,7 +164,6 @@ export default function AddOrganization() {
                       required
                     />
                   </div>
-
                   <div className="form-field">
                     <label className="form-label">Organization Head</label>
                     <input
@@ -173,6 +176,33 @@ export default function AddOrganization() {
                       required
                     />
                   </div>
+                  <div className="form-field">
+                    <label className="form-label">Organization Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="form-input"
+                      placeholder="Organization email address"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-field">
+                    <label className="form-label">Password</label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="form-input"
+                      placeholder="Create a secure password"
+                      required
+                    />
+                  </div>
+
+                  
 
                   <div className="form-field">
                     <label className="form-label">Organization Contact</label>
