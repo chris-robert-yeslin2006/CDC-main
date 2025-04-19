@@ -5,11 +5,10 @@ import { useState } from 'react';
 export default function SideNav({ activeSection, onNavChange, userProfile }) {
   // State for tracking expanded nav items
   const [expandedItems, setExpandedItems] = useState({
-    organizations: false,
+    students: false,
     admin: false
   });
 
-  // Toggle expanded state for items with sub-navigation
   const toggleExpand = (item) => {
     setExpandedItems({
       ...expandedItems,
@@ -19,80 +18,129 @@ export default function SideNav({ activeSection, onNavChange, userProfile }) {
 
   return (
     <div className="sidebar">
-      <div className="user-profile">
-        <div className="user-avatar">{userProfile.avatar}</div>
-        <div className="user-info">
-          <h3>{userProfile.name}</h3>
-          <p>{userProfile.role}</p>
-        </div>
+      <div className="dashboard-header">
+        <h1>Dashboard</h1>
+        <button className="toggle-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          </svg>
+        </button>
       </div>
       
       <ul className="nav-menu">
-        <li 
+
+      <li 
           className={`nav-item ${activeSection === 'statistics' ? 'active' : ''}`}
           onClick={() => onNavChange('statistics')}
         >
-          <i>📊</i> 
-          <span>Statistics</span>
+          <div className="nav-label">
+            <svg className="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span>Statistics</span>
+          </div>
         </li>
+       
         
-        <li className={`nav-item ${activeSection.startsWith('organizations') ? 'active' : ''}`}>
-          <div onClick={() => toggleExpand('organizations')} className="nav-toggle">
+        <li className={`nav-item ${activeSection.startsWith('student') ? 'active' : ''}`}>
+          <div className="nav-toggle" onClick={() => toggleExpand('students')}>
             <div className="nav-label">
-              <i>🏢</i>
-              <span>Organizations</span>
-            </div>
-            <span className={`chevron ${expandedItems.organizations ? 'expanded' : ''}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
+              <svg className="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5CCEEE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
               </svg>
-            </span>
+              <span>Students</span>
+            </div>
+            <svg className={`chevron ${expandedItems.students ? 'expanded' : ''}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </div>
           
-          {expandedItems.organizations && (
+          {expandedItems.students && (
             <ul className="sub-nav">
               <li 
-                className={activeSection === 'organizations-add' ? 'active' : ''}
-                onClick={() => onNavChange('organizations-add')}
+                className={`sub-nav-item ${activeSection === 'student-add' ? 'active' : ''}`}
+                onClick={() => onNavChange('student-add')}
               >
-                Add
+                <div className="nav-label">
+                  <svg className="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                  </svg>
+                  <span>Add Student</span>
+                </div>
               </li>
+              
               <li 
-                className={activeSection === 'organizations-list' ? 'active' : ''}
-                onClick={() => onNavChange('organizations-list')}
+                className={`sub-nav-item ${activeSection === 'student-list' ? 'active' : ''}`}
+                onClick={() => onNavChange('student-list')}
               >
-                List
+                <div className="nav-label">
+                  <svg className="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </svg>
+                  <span>List Students</span>
+                </div>
               </li>
             </ul>
           )}
         </li>
         
         <li className={`nav-item ${activeSection.startsWith('admin') ? 'active' : ''}`}>
-          <div onClick={() => toggleExpand('admin')} className="nav-toggle">
+          <div className="nav-toggle" onClick={() => toggleExpand('admin')}>
             <div className="nav-label">
-              <i>👥</i>
+              <svg className="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5CCEEE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
               <span>Admin</span>
             </div>
-            <span className={`chevron ${expandedItems.admin ? 'expanded' : ''}`}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </span>
+            <svg className={`chevron ${expandedItems.admin ? 'expanded' : ''}`} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </div>
           
           {expandedItems.admin && (
             <ul className="sub-nav">
               <li 
-                className={activeSection === 'admin-add' ? 'active' : ''}
+                className={`sub-nav-item ${activeSection === 'admin-add' ? 'active' : ''}`}
                 onClick={() => onNavChange('admin-add')}
               >
-                Add
+                <div className="nav-label">
+                  <svg className="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                  </svg>
+                  <span>Add Admin</span>
+                </div>
               </li>
+              
               <li 
-                className={activeSection === 'admin-list' ? 'active' : ''}
+                className={`sub-nav-item ${activeSection === 'admin-list' ? 'active' : ''}`}
                 onClick={() => onNavChange('admin-list')}
               >
-                List
+                <div className="nav-label">
+                  <svg className="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </svg>
+                  <span>List Admins</span>
+                </div>
               </li>
             </ul>
           )}
@@ -102,186 +150,128 @@ export default function SideNav({ activeSection, onNavChange, userProfile }) {
           className={`nav-item ${activeSection === 'analytics' ? 'active' : ''}`}
           onClick={() => onNavChange('analytics')}
         >
-          <i>📈</i>
-          <span>Analytics</span>
-        </li>
-        
-        <li 
-          className={`nav-item ${activeSection === 'contentManagement' ? 'active' : ''}`}
-          onClick={() => onNavChange('contentManagement')}
-        >
-          <i>📄</i>
-          <span>Content Management</span>
-        </li>
-        
-        <li 
-          className={`nav-item ${activeSection === 'systemSettings' ? 'active' : ''}`}
-          onClick={() => onNavChange('systemSettings')}
-        >
-          <i>⚙️</i>
-          <span>System Settings</span>
+          <div className="nav-label">
+            <svg className="nav-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            <span>Analytics</span>
+          </div>
         </li>
       </ul>
 
       <style jsx>{`
         .sidebar {
-          // background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-          background :rgba(50, 60, 80, 0.95) ;
-          color: rgba(255, 255, 255, 0.95);
-          padding: 24px 0;
-          box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+          background: white;
+          color: #333;
+          padding: 20px 0;
           height: 100%;
           overflow-y: auto;
-          border-radius: 0 16px 16px 0;
+          width: 250px;
+          display: flex;
+          flex-direction: column;
         }
         
-        .user-profile {
+        .dashboard-header {
           display: flex;
           align-items: center;
-          padding: 0 24px 24px;
-          border-bottom: 1px solid rgba(255,255,255,0.1);
-          margin-bottom: 20px;
-          position: relative;
+          justify-content: space-between;
+          padding: 0 20px 20px;
+          margin-bottom: 10px;
         }
         
-        .user-profile:after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 15%;
-          width: 70%;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        .dashboard-header h1 {
+          margin: 0;
+          font-size: 28px;
+          font-weight: 500;
+          color: #5CCEEE;
         }
         
-        .user-avatar {
-          width: 56px;
-          height: 56px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-          margin-right: 16px;
+        .toggle-button {
+          background: transparent;
+          border: none;
+          cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 20px;
-          font-weight: 500;
-          box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
-        }
-        
-        .user-info h3 {
-          margin: 0;
-          font-size: 16px;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-        }
-        
-        .user-info p {
-          margin: 4px 0 0;
-          font-size: 14px;
-          opacity: 0.7;
-          letter-spacing: 0.3px;
+          color: #666;
         }
         
         .nav-menu {
           list-style: none;
-          padding: 8px 16px;
+          padding: 0;
           margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
         }
         
         .nav-item {
-          border-radius: 8px;
-          margin-bottom: 8px;
-          transition: all 0.2s ease;
-          font-weight: 500;
-        }
-        
-        .nav-item i {
-          margin-right: 12px;
-          font-size: 18px;
-          display: inline-flex;
-          align-items: center;
-        }
-        
-        .nav-toggle, .nav-item {
-          padding: 12px 16px;
           cursor: pointer;
+          transition: all 0.2s ease;
+          border-radius: 0;
+          font-weight: 500;
+          font-size: 16px;
         }
         
         .nav-toggle {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          padding: 12px 20px;
           width: 100%;
         }
         
         .nav-label {
           display: flex;
           align-items: center;
+          gap: 12px;
+          padding: 12px 20px;
         }
         
-        .nav-item.active {
-          background: rgba(56, 189, 248, 0.15);
-          border-left: 3px solid #38bdf8;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-item:hover:not(.active) {
-          background-color: rgba(255,255,255,0.07);
-          transform: translateX(3px);
-        }
-        
-        .chevron {
-          transition: transform 0.3s ease;
-        }
-        
-        .chevron.expanded {
-          transform: rotate(180deg);
+        .nav-item > .nav-label {
+          width: 100%;
         }
         
         .sub-nav {
           list-style: none;
-          padding: 5px 0 5px 36px;
-          margin: 8px 0 8px 0;
-          border-left: 1px dashed rgba(255,255,255,0.2);
-          margin-left: 10px;
+          padding: 0;
+          margin: 0;
         }
         
-        .sub-nav li {
-          padding: 10px 16px;
+        .sub-nav-item {
           cursor: pointer;
-          font-size: 14px;
-          border-radius: 6px;
           transition: all 0.2s ease;
-          margin-bottom: 4px;
-          font-weight: 400;
+          padding-left: 25px;
+          font-size: 15px;
+          color: #666;
         }
         
-        .sub-nav li:hover:not(.active) {
-          background-color: rgba(255,255,255,0.07);
-          transform: translateX(3px);
+        .sub-nav-item .nav-label {
+          padding: 10px 20px;
         }
         
-        .sub-nav li.active {
-          background-color: rgba(56, 189, 248, 0.15);
+        .nav-icon {
+          width: 20px;
+          height: 20px;
+        }
+        
+        .nav-item.active, .sub-nav-item.active {
+          background-color: #f5f5f5;
+          color: #000;
           font-weight: 500;
         }
         
-        /* Custom scrollbar */
-        .sidebar::-webkit-scrollbar {
-          width: 5px;
+        .nav-item:hover:not(.active), .sub-nav-item:hover:not(.active) {
+          background-color: #f9f9f9;
         }
         
-        .sidebar::-webkit-scrollbar-track {
-          background: rgba(0,0,0,0.1);
+        .chevron {
+          transition: transform 0.3s ease;
+          color: #666;
         }
         
-        .sidebar::-webkit-scrollbar-thumb {
-          background: rgba(56, 189, 248, 0.5);
-          border-radius: 10px;
-        }
-        
-        .sidebar::-webkit-scrollbar-thumb:hover {
-          background: rgba(56, 189, 248, 0.7);
+        .chevron.expanded {
+          transform: rotate(180deg);
         }
       `}</style>
     </div>
