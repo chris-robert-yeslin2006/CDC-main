@@ -98,7 +98,7 @@
   overflow-y: hidden;
   scale: 0.7;
   position: relative;
-  top: -150px;
+  top: -200px;
   left: -15%;
   width: 110vw;
 }
@@ -756,4 +756,327 @@
 
 .chevronUp {
   transform: rotate(180deg);
+}
+/* styles/Home.module.css */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.content {
+  padding: 16px;
+}
+
+/* Search Cards */
+.searchCardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.searchCard {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px 24px;
+  min-width: 200px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.colorDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.blueDot {
+  background-color: #4285f4;
+}
+
+.redDot {
+  background-color: #ea4335;
+}
+
+.greenDot {
+  background-color: #34a853;
+}
+
+.purpleDot {
+  background-color: #9334e6;
+}
+
+.orangeDot {
+  background-color: #fbbc05;
+}
+
+.searchTermText {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.termTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: #202124;
+}
+
+.termLabel {
+  font-size: 12px;
+  color: #5f6368;
+  margin-top: 2px;
+}
+
+.removeButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background-color: #f1f3f4;
+  color: #5f6368;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.removeButton:hover {
+  background-color: #e8eaed;
+  color: #202124;
+}
+
+.addComparisonCard {
+  cursor: pointer;
+  background-color: #e8f0fe;
+  border: 1px dashed #4285f4;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  padding: 16px;
+}
+
+.addingActive {
+  background-color: white;
+  border: 1px solid #dadce0;
+}
+
+.plusIcon {
+  font-size: 20px;
+  color: #4285f4;
+  margin-right: 8px;
+}
+
+.addComparisonText {
+  color: #4285f4;
+  font-size: 14px;
+}
+
+.compareInputContainer {
+  width: 100%;
+}
+
+.compareInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.dateRangeSelector {
+  margin-bottom: 12px;
+}
+
+.dateRangeLabel {
+  display: block;
+  font-size: 12px;
+  color: #5f6368;
+  margin-bottom: 4px;
+}
+
+.dateRangeDropdown {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.compareInputActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.compareCancelBtn {
+  background: none;
+  border: none;
+  color: #5f6368;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.compareConfirmBtn {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.compareConfirmBtn:disabled {
+  background-color: #dadce0;
+  cursor: not-allowed;
+}
+
+/* Filter Controls */
+.filterControls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.filterSelect {
+  position: relative;
+}
+
+.selectDropdown {
+  padding: 8px 32px 8px 12px;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  color: #202124;
+  appearance: none;
+  min-width: 140px;
+  cursor: pointer;
+}
+
+.filterSelect::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #5f6368;
+  pointer-events: none;
+}
+
+/* Interest over time section */
+.interestSection {
+  background-color: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.interestHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.interestTitle {
+  font-size: 18px;
+  font-weight: 400;
+  color: #202124;
+  margin: 0;
+}
+
+.interestActions {
+  display: flex;
+  gap: 8px;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5f6368;
+}
+
+.iconButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Graph Styles */
+.graphContainer {
+  margin-top: 24px;
+  height: 300px;
+  position: relative;
+}
+
+.graph {
+  display: flex;
+  height: 100%;
+  position: relative;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.graphYAxis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 12px;
+  width: 40px;
+}
+
+.yAxisLabel {
+  font-size: 12px;
+  color: #5f6368;
+}
+
+.graphContent {
+  flex: 1;
+  position: relative;
+  height: 100%;
+}
+
+.graphLine {
+  position: absolute;
+  height: 1px;
+  width: 100%;
+  background-color: #e0e0e0;
+}
+
+.graphXAxis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-left: 40px;
+}
+
+.xAxisLabel {
+  font-size: 12px;
+  color: #5f6368;
 }

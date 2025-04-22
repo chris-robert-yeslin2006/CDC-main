@@ -9,9 +9,9 @@ export default function ClientLayout({ children }) {
 
   const handleNavChange = (section) => {
     const routes = {
-      'statistics': '/Dashboard/Statistics',
-      'organizations-add': '/Dashboard/Organization/Add',
-      'organizations-list': '/Dashboard/Organization/List',
+      'statistics': '/Dashboard',
+      'organization-add': '/Dashboard/Organization/Add',
+      'organization-list': '/Dashboard/Organization/List',
       'admin-add': '/Dashboard/Admin/Add',
       'admin-list': '/Dashboard//Admin/List',
       'analytics': '/Dashboard//Analytics/List',
